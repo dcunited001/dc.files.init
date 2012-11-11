@@ -17,6 +17,16 @@ dcdotfiles-make-symlink()
   fi
 }
 
+dcdotfiles-zsh-default()
+{
+  chsh -s /bin/zsh
+}
+
+dcdotfiles-bash-default()
+{
+  chsh -s /bin/bash
+}
+
 # ==============
 # setup helpers
 # ==============
