@@ -1,7 +1,17 @@
 #!/bin/bash
 
-dcdotfiles-vars-rbates()
+dcdotfiles-vars-ryanb()
 {
-  export RBATES_PATH=rbates
-  export RBATES_REPO=https://github.com/rbates/dotfiles
+  export RYANB_PATH=ryanb
+  export RYANB_REPO=https://github.com/ryanb/dotfiles
+}
+
+dcdotfiles-link-gemrc()
+{
+  dcdotfiles-make-symlink $INSTALL_PATH/$RYANB_PATH/gemrc $HOME_PATH/.gemrc
+}
+
+dcdotfiles-link-irbrc()
+{
+  dcdotfiles-make-symlink $INSTALL_PATH/$RYANB_PATH/irbrc $HOME_PATH/.irbrc
 }

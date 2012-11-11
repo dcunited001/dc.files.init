@@ -71,4 +71,30 @@ dcdotfiles-setup-tmux()
   echo 'TODO: setup tmux'
 }
 
+dcdotfiles-setup-ryanb()
+{
+  source $INSTALL_PATH/init/ryanb-setup.sh
+  dcdotfiles-link-gemrc
+  dcdotfiles-link-irbrc
+  #link to vim plugins?
+}
 
+dcdotfiles-setup-janus()
+{
+  echo 'TODO: setup janus'
+}
+
+dcdotfiles-setup-vim()
+{
+  echo 'TODO: setup vim'
+}
+
+dcdotfiles-setup-zsh()
+{
+  echo 'TODO: setup zsh'
+}
+
+dcdotfiles-setup-bash()
+{
+  echo 'TODO: setup bash '
+}
