@@ -2,9 +2,19 @@
 
 dcdotfiles-make-symlink()
 {
-  echo "    Linking $2"
-  echo "      => $1"
-  ln -s $1 $2
+  if [ -f "$2" ]
+  then
+    echo "FILE EXISTS: $2 aborting.."
+    exit
+  elif [ ! -f "$1" ]
+  then
+    echo "FILE DOES NOT EXIST: $1 aborting"
+    exit
+  else
+    echo "    Linking $2"
+    echo "      => $1"
+    ln -s $1 $2
+  fi
 }
 
 # ==============
@@ -30,12 +40,14 @@ dcdotfiles-setup-gitconf()
 dcdotfiles-setup-iterm()
 {
   source $INSTALL_PATH/init/iterm-setup.sh
-  echo 'TODO: setup iterm'
+  dcdotfiles-vars-iterm
+  dcdotfiles-link-iterm
 }
 
 dcdotfiles-setup-kbd()
 {
   source $INSTALL_PATH/init/kbd-setup.sh
+  dcdotfiles-vars-setkbd
   case "$OS_TYPE" in
     mac)
       dcdotfiles-setup-kbd-mac
@@ -44,6 +56,13 @@ dcdotfiles-setup-kbd()
       dcdotfiles-setup-kbd-ubu
       ;;
   esac
+}
+
+dcdotfiles-setup-subl()
+{
+  source $INSTALL_PATH/init/subl-setup.sh
+  dcdotfiles-vars-subl
+  dcdotfiles-link-subl
 }
 
 dcdotfiles-setup-tmux()
