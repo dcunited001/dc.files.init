@@ -24,7 +24,7 @@ dcdotfiles-setup-gitconf()
 
   source $INSTALL_PATH/init/gitconf-setup.sh
   dcdotfiles-vars-setgitconf $NAME $EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
-  dcdotfiles-create-gitignore-link
+  dcdotfiles-link-gitignore
 }
 
 dcdotfiles-setup-iterm()
@@ -36,7 +36,14 @@ dcdotfiles-setup-iterm()
 dcdotfiles-setup-kbd()
 {
   source $INSTALL_PATH/init/kbd-setup.sh
-  echo 'TODO: setup kbd'
+  case "$OS_TYPE" in
+    mac)
+      dcdotfiles-setup-kbd-mac
+      ;;
+    ubu)
+      dcdotfiles-setup-kbd-ubu
+      ;;
+  esac
 }
 
 dcdotfiles-setup-tmux()

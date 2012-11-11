@@ -10,7 +10,7 @@ dcdotfiles-vars-setgitconf()
   export GIT_TOKEN=$5
 }
 
-dcdotfiles-create-gitignore-link()
+dcdotfiles-link-gitignore()
 {
   dcdotfiles-make-symlink $INSTALL_PATH/gitconf/$GIT_IGNORE.$OS_TYPE $HOME_PATH/$GIT_IGNORE
 }
