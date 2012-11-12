@@ -55,7 +55,7 @@ mkdir-if-missing()
 check-for-dir()
 {
   echo "    Checking Dir: $1."
-  [[ ! -d "$1" ]] && 
+  [[ ! -d "$1" ]] && { echo "      Directory $1 required"; exit; }
 }
 
 check-if-installed()
@@ -74,15 +74,32 @@ bash-default()
   chsh -s /bin/bash
 }
 
+check-dependencies-init()
+{
+  case "$OS_TYPE" in
+    mac)
+      check-if-installed brew
+      ;;
+    ubu)
+      #check sudo?
+      check-if-installed apt-get
+      ;;
+  esac
+  check-if-installed git
+  check-if-installed ruby
+  check-if-installed perl
+  echo 'TODO: dependencies?'
+}
+
 # ==============
 # setup helpers
 # ==============
 
-setup-secure()
-{
-  source $INSTALL_PATH/init/secure-setup.sh
-  vars-setsecurepath $DEFAULT_SEC_PATH
-}
+# setup-secure()
+# {
+#   source $INSTALL_PATH/init/secure-setup.sh
+#   vars-setsecurepath $DEFAULT_SEC_PATH
+# }
 
 setup-gitconf()
 {
@@ -116,20 +133,22 @@ setup-kbd()
 }
 
 setup-subl()
-{
+{ 
   source $INSTALL_PATH/init/subl-setup.sh
   vars-subl
   link-subl
 }
 
 setup-tmux()
-{
+{ 
   source $INSTALL_PATH/init/tmux-setup.sh
   echo 'TODO: setup tmux'
+  echo 'TODO: setup tmuxinator'
+  link-kbd-bindings 'tmux'
 }
 
 setup-ryanb()
-{
+{ 
   source $INSTALL_PATH/init/ryanb-setup.sh
   link-gemrc
   link-irbrc
@@ -143,15 +162,41 @@ setup-janus()
 
 setup-vim()
 {
+  source $INSTALL_PATH/init/vim-setup.sh
+  check-dependencies-vim
+  mkdir-if-missing $HOME_PATH/.vim
+  link-vimrc
+  link-gvimrc
+  link-kbd-bindings 'vim'
+  setup-vim-plugins
   echo 'TODO: setup vim'
+  #link janus?
+  # make-symlink $INSTALL_PATH/janus/janus $HOME_PATH/.vim/janus
+}
+
+setup-emacs()
+{
+  # source $INSTALL_PATH/init/vim-setup.sh
+  # check-dependencies-emacs
+  # mkdir-if-missing $HOME_PATH/.emacs
+  # link-kbd-bindings 'emacs'
+  echo 'TODO: setup emacs'
 }
 
 setup-zsh()
 {
-  echo 'TODO: setup zsh'
+  source $INSTALL_PATH/init/zsh-setup.sh
+  check-dependencies-zsh
+  vars-set-zsh
+  link-omz
+  link-zshrc
+  link-kbd-bindings 'zsh'
 }
 
 setup-bash()
 {
-  echo 'TODO: setup bash '
+  source $INSTALL_PATH/init/bash-setup.sh
+  check-dependencies-bash
+  vars-setbash
+  link-kbd-bindings 'bash'
 }
