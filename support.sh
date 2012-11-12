@@ -1,20 +1,39 @@
 #!/bin/bash
 
+vars-setinit()
+{
+  ask-for-input INSTALL_HOME_PATH 'Home Path'
+  ask-for-input INSTALL_FOLDER 'Install Folder', '.files'
+  ask-for-input OS_TYPE 'OS Type /(?-i)(mac|vim)/', 'mac'
+  ask-for-input INSTALL_NAME 'Name'
+  ask-for-input INSTALL_EMAIL 'Email'
+  ask-for-input INSTALL_USER_NAME 'User Name'
+  ask-for-input INSTALL_GIT_USER 'Git User'
+  export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER
+}
+
+ask-for-input()
+{
+  echo "Enter $2:"
+  read $1
+  echo "TODO: defaults"
+}
+
 make-symlink()
 {
+  echo "    Linking $2"
   if [ -h "$2" ]; then
-    echo "LINK EXISTS: $2 skipping.."
+    echo "      LINK EXISTS: $2 skipping.."
   if [ -d "$2" ]; then
-    echo "DIR EXISTS: $2 aborting.."
+    echo "      DIR EXISTS: $2 aborting.."
     exit
   elif [ -e "$2" ]; then
-    echo "FILE EXISTS: $2 aborting.."
+    echo "      FILE EXISTS: $2 aborting.."
     exit
   elif [ ! -e "$1" ]; then
-    echo "SOURCE DOES NOT EXIST: $1 aborting"
+    echo "      SOURCE DOES NOT EXIST: $1 aborting"
     exit
   else
-    echo "    Linking $2"
     echo "      => $1"
     ln -s $1 $2
   fi
@@ -22,13 +41,13 @@ make-symlink()
 
 mkdir-if-missing()
 {
+  echo "    Create Dir: $1"
   if [ -d "$1" ]; then
-    echo "    Skip: Create Dir: $1"
+    echo "      Skip: Create Dir: $1"
   elif [ -e "$1" ]; then
-    echo "    Error: file is not directory."
+    echo "      Error: file is not directory."
     exit
   else
-    echo "    Create Dir: $1"
     mkdir $1
   fi
 }
@@ -41,7 +60,7 @@ check-for-dir()
 
 check-if-installed()
 {
-  echo "    Checking for $1:"
+  echo "    Checking: $1"
   command -v $1 >/dev/null 2>&1 || { echo "      $1 is required." >&2; exit 1; }
 }
 
@@ -68,7 +87,7 @@ setup-secure()
 setup-gitconf()
 {
   # fetch git token
-  export GIT_TOKEN_SECURE=
+  # export GIT_TOKEN_SECURE=
 
   source $INSTALL_PATH/init/gitconf-setup.sh
   vars-setgitconf $NAME $EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE

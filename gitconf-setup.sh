@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export DEFAULT_GIT_IGNORE=.gitignore_global
+export DEFAULT_GIT_CONFIG=.gitconfig
+
 check-dependencies-gitconf()
 {
   case "$OS_TYPE" in
