@@ -96,6 +96,21 @@ check-dependencies-init(){
 # setup helpers
 # ==============
 
+source-all-scripts(){
+  source $INSTALL_PATH/init/support.sh
+  source $INSTALL_PATH/init/bash-setup.sh
+  source $INSTALL_PATH/init/gitconf-setup.sh
+  source $INSTALL_PATH/init/iterm-setup.sh
+  source $INSTALL_PATH/init/janus-setup.sh
+  source $INSTALL_PATH/init/kbd-setup.sh
+  source $INSTALL_PATH/init/rvm-setup.sh
+  source $INSTALL_PATH/init/ryanb-setup.sh
+  source $INSTALL_PATH/init/subl-setup.sh
+  source $INSTALL_PATH/init/tmux-setup.sh
+  source $INSTALL_PATH/init/vim-setup.sh
+  source $INSTALL_PATH/init/zsh-setup.sh
+}
+
 # setup-secure()
 # {
 #   source $INSTALL_PATH/init/secure-setup.sh
