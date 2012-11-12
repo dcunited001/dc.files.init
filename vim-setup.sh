@@ -26,3 +26,8 @@ link-gvimrc()
   make-symlink $INSTALL_PATH/vim/.gvim.before.$OS_TYPE $HOME_PATH/.gvim.before
   make-symlink $INSTALL_PATH/vim/.gvim.after.$OS_TYPE $HOME_PATH/.gvim.after
 }
+
+link-vim-colors()
+{
+  make-symlink $INSTALL_PATH/vim/colors/ $HOME_PATH/.vim/colors
+}

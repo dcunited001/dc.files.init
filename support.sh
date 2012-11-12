@@ -24,7 +24,7 @@ make-symlink()
   echo "    Linking $2"
   if [ -h "$2" ]; then
     echo "      LINK EXISTS: $2 skipping.."
-  if [ -d "$2" ]; then
+  elif [ -d "$2" ]; then
     echo "      DIR EXISTS: $2 aborting.."
     exit
   elif [ -e "$2" ]; then

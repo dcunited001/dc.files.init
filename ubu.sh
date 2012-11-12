@@ -1,4 +1,4 @@
 #!/bin/bash
-source $INSTALL_PATH/init/support.sh
+source init/support.sh
 vars-setinit
 check-dependencies-init
