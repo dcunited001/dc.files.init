@@ -149,7 +149,7 @@ setup-tmux()
   source $INSTALL_PATH/init/tmux-setup.sh
   check-dependencies-tmux
   vars-tmux
-  echo 'TODO: setup tmux'
+  link-tmux-conf
   echo 'TODO: setup tmuxinator'
   link-kbd-bindings 'tmux'
 }
