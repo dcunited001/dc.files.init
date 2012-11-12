@@ -16,6 +16,7 @@ All Platforms:
 -   link: general scripts
 -   link: .emacs
 -   link: sublime
+-   defaults when reading input
 
 Linux Only:
 -   shortcuts list (automate?)

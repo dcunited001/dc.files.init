@@ -9,7 +9,8 @@ check-dependencies-gitconf()
 }
 
 vars-setgitconf()
-{ # set name,email,ignorefile,config,token
+{ 
+  # set name,email,ignorefile,config,token
   #git-setup.sh
   export GIT_NAME=$1
   export GIT_EMAIL=$2

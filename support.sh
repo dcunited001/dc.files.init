@@ -14,23 +14,30 @@ vars-setinit()
 
 ask-for-input()
 {
-  echo "Enter $2:"
-  read $1
+  if [[ -z $3 ]]; then
+    echo "  Enter $2: [ $3 ]"
+    read $1
+    # if empty, set as default
+    [[ -z `echo $1` ]] && { export `echo $1`=$3; }
+  else
+    echo "  Enter $2: [ (No Default) ]"
+    read $1
+  fi
   echo "TODO: defaults"
 }
 
 make-symlink()
 {
   echo "    Linking $2"
-  if [ -h "$2" ]; then
+  if [[ -h $2 ]]; then
     echo "      LINK EXISTS: $2 skipping.."
-  elif [ -d "$2" ]; then
+  elif [[ -d "$2" ]]; then
     echo "      DIR EXISTS: $2 aborting.."
     exit
-  elif [ -e "$2" ]; then
+  elif [[ -e "$2" ]]; then
     echo "      FILE EXISTS: $2 aborting.."
     exit
-  elif [ ! -e "$1" ]; then
+  elif [[ ! -e "$1" ]]; then
     echo "      SOURCE DOES NOT EXIST: $1 aborting"
     exit
   else
@@ -42,9 +49,9 @@ make-symlink()
 mkdir-if-missing()
 {
   echo "    Create Dir: $1"
-  if [ -d "$1" ]; then
+  if [[ -d $1 ]]; then
     echo "      Skip: Create Dir: $1"
-  elif [ -e "$1" ]; then
+  elif [[ -e $1 ]]; then
     echo "      Error: file is not directory."
     exit
   else
