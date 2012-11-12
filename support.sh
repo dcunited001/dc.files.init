@@ -7,10 +7,27 @@ bash-default(){ chsh -s /bin/bash }
 # ==============
 # menu helpers
 # ==============
+
+output-menu(){
+  output-line
+  for arg in $@; do
+    echo $arg:
+  done }
+
 dcdotfiles-main-menu(){ echo 'TODO: main menu' }
-output-menu(){ echo 'TODO: output menu given arrays with options and descriptions'}
+output-line(){ echo "==========================================" }
+output-info(){
+  output-line
+  echo OS_TYPE:           $OS_TYPE
+  echo INSTALL_NAME:      $INSTALL_NAME
+  echo INSTALL_EMAIL:     $INSTALL_EMAIL
+  echo INSTALL_PATH:      $INSTALL_PATH
+  echo INSTALL_USER_NAME: $INSTALL_USER_NAME
+  echo INSTALL_GIT_USER:  $INSTALL_GIT_USER
+  output-line }
 
 vars-setinit(){
+  output-line
   ask-for-input INSTALL_HOME_PATH 'Home Path'
   ask-for-input INSTALL_FOLDER 'Install Folder', '.files'
   ask-for-input OS_TYPE 'OS Type /(?-i)(mac|vim)/', 'mac'
@@ -18,8 +35,17 @@ vars-setinit(){
   ask-for-input INSTALL_EMAIL 'Email'
   ask-for-input INSTALL_USER_NAME 'User Name'
   ask-for-input INSTALL_GIT_USER 'Git User'
-  export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER
-}
+  export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER }
+
+vars-setinit-default-mac(){
+  export OS_TYPE=mac
+  export INSTALL_NAME='David Conner'
+  export INSTALL_EMAIL='dconner.pro@gmail.com'
+  export INSTALL_USER_NAME=davidconner
+  export INSTALL_GIT_USER=dcunited001
+  export INSTALL_HOME_PATH=/Users/davidconner
+  export INSTALL_FOLDER=.files
+  export INSTAPP_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER }
 
 ask-for-input(){
   if [[ -z $3 ]]; then
@@ -30,67 +56,45 @@ ask-for-input(){
   else
     echo "  Enter $2: [ (No Default) ]"
     read $1
-  fi
-}
+  fi }
 
 make-symlink(){
   echo "    Linking $2"
-  if [[ -h $2 ]]; then
-    echo "      LINK EXISTS: $2 skipping.."
-  elif [[ -d "$2" ]]; then
-    echo "      DIR EXISTS: $2 aborting.."
-    exit
-  elif [[ -e "$2" ]]; then
-    echo "      FILE EXISTS: $2 aborting.."
-    exit
-  elif [[ ! -e "$1" ]]; then
-    echo "      SOURCE DOES NOT EXIST: $1 aborting"
-    exit
-  else
-    echo "      => $1"
-    ln -s $1 $2
-  fi
-}
+  if [[ -h $2 ]]; then        { echo "      LINK EXISTS: $2 skipping.." }
+  elif [[ -d "$2" ]]; then    { echo "      DIR EXISTS: $2 aborting.."; exit }
+  elif [[ -e "$2" ]]; then    { echo "      FILE EXISTS: $2 aborting.."; exit }
+  elif [[ ! -e "$1" ]]; then  { echo "      SOURCE DOES NOT EXIST: $1 aborting"; exit }
+  else { echo "      => $1"; ln -s $1 $2; }
+  fi }
 
 mkdir-if-missing(){
   echo "    Create Dir: $1"
-  if [[ -d $1 ]]; then
-    echo "      Skip: Create Dir: $1"
-  elif [[ -e $1 ]]; then
-    echo "      Error: file is not directory."
-    exit
-  else
-    mkdir $1
-  fi
-}
+  if [[ -d $1 ]]; then { echo "      Skip: Create Dir: $1" }
+  elif [[ -e $1 ]]; then { echo "      Error: file is not directory."; exit }
+  else { mkdir $1; } 
+  fi }
 
 check-for-dir(){
   echo "    Checking Dir: $1."
-  [[ ! -d "$1" ]] && { echo "      Directory $1 required"; exit; }
-}
+  [[ ! -d "$1" ]] && { echo "      Directory $1 required"; exit; } }
 
 check-if-installed(){
   #TODO: make this work for arrays
   echo "    Checking: $1"
-  command -v $1 >/dev/null 2>&1 || { echo "      $1 is required." >&2; exit 1; }
-}
+  command -v $1 >/dev/null 2>&1 || { echo "      $1 is required." >&2; exit 1; } }
 
 check-dependencies-init(){
   case "$OS_TYPE" in
     mac)
-      check-if-installed brew
-      ;;
+      check-if-installed brew;;
     ubu)
       #check sudo?
-      check-if-installed apt-get
-      ;;
+      check-if-installed apt-get;;
   esac
   check-if-installed git
   check-if-installed ruby
   check-if-installed perl
-  echo 'TODO: dependencies?'
-}
-
+  echo 'TODO: dependencies?' }
 
 # ==============
 # setup helpers
@@ -107,8 +111,7 @@ source-all-scripts(){
   source $INSTALL_PATH/init/subl-setup.sh
   source $INSTALL_PATH/init/tmux-setup.sh
   source $INSTALL_PATH/init/vim-setup.sh
-  source $INSTALL_PATH/init/zsh-setup.sh
-}
+  source $INSTALL_PATH/init/zsh-setup.sh }
 
 # setup-secure()
 # {
@@ -124,14 +127,13 @@ setup-gitconf(){
   check-dependencies-gitconf
   vars-setgitconf $NAME $EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
   link-gitignore
-  echo 'TODO: gitconfig.erb'
-}
+  echo 'TODO: gitconfig.erb' }
 
 setup-iterm(){
   source $INSTALL_PATH/init/iterm-setup.sh
   check-dependencies-iterm
   vars-iterm
-  link-iterm}
+  link-iterm }
 
 setup-kbd(){
   source $INSTALL_PATH/init/kbd-setup.sh
@@ -144,15 +146,13 @@ setup-kbd(){
     ubu)
       setup-kbd-ubu
       ;;
-  esac
-}
+  esac }
 
 setup-subl(){ 
   source $INSTALL_PATH/init/subl-setup.sh
   check-dependencies-subl
   vars-subl
-  link-subl
-}
+  link-subl }
 
 setup-tmux(){ 
   source $INSTALL_PATH/init/tmux-setup.sh
@@ -160,15 +160,14 @@ setup-tmux(){
   vars-tmux
   link-tmux-conf
   echo 'TODO: setup tmuxinator'
-  link-kbd-bindings 'tmux'
-}
+  link-kbd-bindings 'tmux' }
 
 setup-ryanb(){ 
   source $INSTALL_PATH/init/ryanb-setup.sh
   check-dependencies-ryanb
   vars-ryanb
   link-gemrc
-  link-irbrc}
+  link-irbrc }
 
 setup-janus(){
   source $INSTALL_PATH/init/janus-setup.sh
@@ -177,8 +176,7 @@ setup-janus(){
   make-janus-plugin-folder
   link-janus-folder
   link-janus-rakefile
-  exec-janus-rake
-}
+  exec-janus-rake }
 
 setup-vim(){
   source $INSTALL_PATH/init/vim-setup.sh
@@ -188,17 +186,15 @@ setup-vim(){
   link-gvimrc
   link-kbd-bindings 'vim'
   link-vim-colors
-  setup-vim-plugins
-  # make-symlink $INSTALL_PATH/janus/janus $HOME_PATH/.vim/janus
-}
+  # make-symlink $INSTALL_PATH/janus/janus $HOME_PATH/.vim/janus 
+  setup-vim-plugins }
 
 setup-emacs(){
   # source $INSTALL_PATH/init/emacs-setup.sh
   # check-dependencies-emacs
   # mkdir-if-missing $HOME_PATH/.emacs
   # link-kbd-bindings 'emacs'
-  echo 'TODO: setup emacs'
-}
+  echo 'TODO: setup emacs' }
 
 setup-zsh(){
   source $INSTALL_PATH/init/zsh-setup.sh
@@ -206,12 +202,10 @@ setup-zsh(){
   vars-set-zsh
   link-omz
   link-zshrc
-  link-kbd-bindings 'zsh'
-}
+  link-kbd-bindings 'zsh' }
 
 setup-bash(){
   source $INSTALL_PATH/init/bash-setup.sh
   check-dependencies-bash
   vars-setbash
-  link-kbd-bindings 'bash'
-}
+  link-kbd-bindings 'bash' }
