@@ -107,13 +107,16 @@ setup-gitconf()
   # export GIT_TOKEN_SECURE=
 
   source $INSTALL_PATH/init/gitconf-setup.sh
+  check-dependencies-gitconf
   vars-setgitconf $NAME $EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
   link-gitignore
+  echo 'TODO: gitconfig.erb'
 }
 
 setup-iterm()
 {
   source $INSTALL_PATH/init/iterm-setup.sh
+  check-dependencies-iterm
   vars-iterm
   link-iterm
 }
@@ -121,6 +124,7 @@ setup-iterm()
 setup-kbd()
 {
   source $INSTALL_PATH/init/kbd-setup.sh
+  check-dependencies-kbd
   vars-setkbd
   case "$OS_TYPE" in
     mac)
@@ -135,6 +139,7 @@ setup-kbd()
 setup-subl()
 { 
   source $INSTALL_PATH/init/subl-setup.sh
+  check-dependencies-subl
   vars-subl
   link-subl
 }
@@ -142,6 +147,8 @@ setup-subl()
 setup-tmux()
 { 
   source $INSTALL_PATH/init/tmux-setup.sh
+  check-dependencies-tmux
+  vars-tmux
   echo 'TODO: setup tmux'
   echo 'TODO: setup tmuxinator'
   link-kbd-bindings 'tmux'
@@ -150,14 +157,21 @@ setup-tmux()
 setup-ryanb()
 { 
   source $INSTALL_PATH/init/ryanb-setup.sh
+  check-dependencies-ryanb
+  vars-ryanb
   link-gemrc
   link-irbrc
-  #link to vim plugins?
 }
 
 setup-janus()
 {
-  echo 'TODO: setup janus'
+  source $INSTALL_PATH/init/janus-setup.sh
+  check-dependencies-janus
+  mkdir-if-missing $HOME_PATH/.vim
+  make-janus-plugin-folder
+  link-janus-folder
+  link-janus-rakefile
+  exec-janus-rake
 }
 
 setup-vim()
@@ -168,15 +182,14 @@ setup-vim()
   link-vimrc
   link-gvimrc
   link-kbd-bindings 'vim'
+  link-vim-colors
   setup-vim-plugins
-  echo 'TODO: setup vim'
-  #link janus?
   # make-symlink $INSTALL_PATH/janus/janus $HOME_PATH/.vim/janus
 }
 
 setup-emacs()
 {
-  # source $INSTALL_PATH/init/vim-setup.sh
+  # source $INSTALL_PATH/init/emacs-setup.sh
   # check-dependencies-emacs
   # mkdir-if-missing $HOME_PATH/.emacs
   # link-kbd-bindings 'emacs'
