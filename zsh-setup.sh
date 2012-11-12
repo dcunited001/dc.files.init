@@ -18,7 +18,7 @@ link-omz()
 
 link-zshrc()
 {
-  [[ ! -d "$HOME_PATH/.zsh" ]] && mkdir $HOME_PATH/.zsh
+  mkdir-if-missing $HOME_PATH/.zsh
   make-symlink $INSTALL_PATH/zsh/.zshrc.$OS_TYPE $HOME_PATH/.zshrc
   make-symlink $INSTALL_PATH/zsh/zsh/.aliases.$OS_TYPE $HOME_PATH/.zsh/.aliases
   make-symlink $INSTALL_PATH/zsh/zsh/.omz $HOME_PATH/.zsh/.omz
@@ -26,5 +26,6 @@ link-zshrc()
 
 install-zsh()
 { 
+  # brew/apt-get?
   echo 'TODO: install zsh'
 }
