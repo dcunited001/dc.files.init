@@ -1,14 +1,17 @@
 #!/bin/bash
 
-dcdotfiles-make-symlink()
+make-symlink()
 {
-  if [ -f "$2" ]
-  then
+  if [ -h "$2" ]; then
+    echo "LINK EXISTS: $2 skipping.."
+  if [ -d "$2" ]; then
+    echo "DIR EXISTS: $2 aborting.."
+    exit
+  elif [ -e "$2" ]; then
     echo "FILE EXISTS: $2 aborting.."
     exit
-  elif [ ! -f "$1" ]
-  then
-    echo "FILE DOES NOT EXIST: $1 aborting"
+  elif [ ! -e "$1" ]; then
+    echo "SOURCE DOES NOT EXIST: $1 aborting"
     exit
   else
     echo "    Linking $2"
@@ -17,12 +20,37 @@ dcdotfiles-make-symlink()
   fi
 }
 
-dcdotfiles-zsh-default()
+mkdir-if-missing()
+{
+  if [ -d "$1" ]; then
+    echo "    Skip: Create Dir: $1"
+  elif [ -e "$1" ]; then
+    echo "    Error: file is not directory."
+    exit
+  else
+    echo "    Create Dir: $1"
+    mkdir $1
+  fi
+}
+
+check-for-dir()
+{
+  echo "    Checking Dir: $1."
+  [[ ! -d "$1" ]] && 
+}
+
+check-if-installed()
+{
+  echo "    Checking for $1:"
+  command -v $1 >/dev/null 2>&1 || { echo "      $1 is required." >&2; exit 1; }
+}
+
+zsh-default()
 {
   chsh -s /bin/zsh
 }
 
-dcdotfiles-bash-default()
+bash-default()
 {
   chsh -s /bin/bash
 }
@@ -31,80 +59,80 @@ dcdotfiles-bash-default()
 # setup helpers
 # ==============
 
-dcdotfiles-setup-secure()
+setup-secure()
 {
   source $INSTALL_PATH/init/secure-setup.sh
-  dcdotfiles-vars-setsecurepath $DEFAULT_SEC_PATH
+  vars-setsecurepath $DEFAULT_SEC_PATH
 }
 
-dcdotfiles-setup-gitconf()
+setup-gitconf()
 {
   # fetch git token
   export GIT_TOKEN_SECURE=
 
   source $INSTALL_PATH/init/gitconf-setup.sh
-  dcdotfiles-vars-setgitconf $NAME $EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
-  dcdotfiles-link-gitignore
+  vars-setgitconf $NAME $EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
+  link-gitignore
 }
 
-dcdotfiles-setup-iterm()
+setup-iterm()
 {
   source $INSTALL_PATH/init/iterm-setup.sh
-  dcdotfiles-vars-iterm
-  dcdotfiles-link-iterm
+  vars-iterm
+  link-iterm
 }
 
-dcdotfiles-setup-kbd()
+setup-kbd()
 {
   source $INSTALL_PATH/init/kbd-setup.sh
-  dcdotfiles-vars-setkbd
+  vars-setkbd
   case "$OS_TYPE" in
     mac)
-      dcdotfiles-setup-kbd-mac
+      setup-kbd-mac
       ;;
     ubu)
-      dcdotfiles-setup-kbd-ubu
+      setup-kbd-ubu
       ;;
   esac
 }
 
-dcdotfiles-setup-subl()
+setup-subl()
 {
   source $INSTALL_PATH/init/subl-setup.sh
-  dcdotfiles-vars-subl
-  dcdotfiles-link-subl
+  vars-subl
+  link-subl
 }
 
-dcdotfiles-setup-tmux()
+setup-tmux()
 {
   source $INSTALL_PATH/init/tmux-setup.sh
   echo 'TODO: setup tmux'
 }
 
-dcdotfiles-setup-ryanb()
+setup-ryanb()
 {
   source $INSTALL_PATH/init/ryanb-setup.sh
-  dcdotfiles-link-gemrc
-  dcdotfiles-link-irbrc
+  link-gemrc
+  link-irbrc
   #link to vim plugins?
 }
 
-dcdotfiles-setup-janus()
+setup-janus()
 {
   echo 'TODO: setup janus'
 }
 
-dcdotfiles-setup-vim()
+setup-vim()
 {
   echo 'TODO: setup vim'
 }
 
-dcdotfiles-setup-zsh()
+setup-zsh()
 {
   echo 'TODO: setup zsh'
 }
 
-dcdotfiles-setup-bash()
+setup-bash()
 {
   echo 'TODO: setup bash '
 }

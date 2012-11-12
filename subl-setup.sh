@@ -1,6 +1,11 @@
 #!/bin/bash
 
-dcdotfiles-vars-setsubl()
+check-dependencies-subl()
+{
+  echo 'TODO: check-dependencies-subl'
+}
+
+vars-setsubl()
 {
   case "$OS_TYPE" in
     mac)
@@ -12,17 +17,17 @@ dcdotfiles-vars-setsubl()
       export SUBL_SETTINGS_PATH=
       export SUBL_SETTINGS_USER=
       ;;
-esac
+  esac
   # TODO: sublime plugins/settings
   #export SUBL_PLUGINS_PATH=$2
 }
 
-dcdotfiles-link-subl()
+link-subl()
 {
-  dcdotfiles-make-symlink $INSTALL_PATH/subl/$SUBL_SETTINGS_FILE $SUBL_SETTINGS_PATH/$SUBL_SETTINGS_FILE
+  make-symlink $INSTALL_PATH/subl/$SUBL_SETTINGS_FILE $SUBL_SETTINGS_PATH/$SUBL_SETTINGS_FILE
 }
 
-dcdotfiles-backup-subl()
+backup-subl()
 {
   echo 'TODO: backup subl settings'
 }

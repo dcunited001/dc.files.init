@@ -1,7 +1,12 @@
 #!/bin/bash
 
-dcdotfiles-vars-setbash()
+check-dependencies-bash()
 {
+  check-if-installed bash
+}
 
+vars-setbash()
+{
+  echo 'TODO: set bash vars'
 }
 

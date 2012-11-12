@@ -1,17 +1,22 @@
 #!/bin/bash
 
-dcdotfiles-vars-ryanb()
+check-dependencies-ryanb()
+{
+  echo 'TODO: check-dependencies-ryanb'
+}
+
+vars-ryanb()
 {
   export RYANB_PATH=ryanb
   export RYANB_REPO=https://github.com/ryanb/dotfiles
 }
 
-dcdotfiles-link-gemrc()
+link-gemrc()
 {
-  dcdotfiles-make-symlink $INSTALL_PATH/$RYANB_PATH/gemrc $HOME_PATH/.gemrc
+  make-symlink $INSTALL_PATH/$RYANB_PATH/gemrc $HOME_PATH/.gemrc
 }
 
-dcdotfiles-link-irbrc()
+link-irbrc()
 {
-  dcdotfiles-make-symlink $INSTALL_PATH/$RYANB_PATH/irbrc $HOME_PATH/.irbrc
+  make-symlink $INSTALL_PATH/$RYANB_PATH/irbrc $HOME_PATH/.irbrc
 }

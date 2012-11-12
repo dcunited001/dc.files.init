@@ -1,11 +1,15 @@
 #!/bin/bash
+check-dependencies-secure()
+{
+  echo 'TODO: check-dependencies-secure?'
+}
 
-dcdotfiles-vars-setsecurepath()
+vars-setsecurepath()
 { #set vars for the secure files location
   export SEC_PATH=$1
 }
 
-dcdotfiles-create-securepath()
+create-securepath()
 {
   mkdir $HOME_PATH/$SEC_PATH
 }
