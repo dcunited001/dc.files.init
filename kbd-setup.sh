@@ -17,30 +17,27 @@ vars-setkbd()
   export XMODMAP=.Xmodmap
   export MAC_KEY_REMAP_PATH=$HOME_PATH/Library/Preferences
   export MAC_KEY_REMAP_FILE=org.pqrs.KeyRemap4MacBook.plist
-  export PC_KEY_REMAP=
+  export PC_KEY_REMAP_FILE=org.pqrs.PCKeyboardHack.plist
 }
 
 setup-kbd-mac()
 {
-  if [ -d "$MAC_KEY_REMAP_PATH" ]
-  then
-    make-symlink $INSTALL_PATH/kbd/$MAC_KEY_REMAP_FILE $MAC_KEY_REMAP_FILE
-  else
-    echo 'INSTALL KEY REMAP. aborting..'
-    exit;
-  fi
+  check-key-remap
+  make-symlink $INSTALL_PATH/kbd/$MAC_KEY_REMAP_FILE $MAC_KEY_REMAP_FILE
   echo 'TODO: finish mac keyboard setup'
 }
 
 setup-kbd-ubu()
 {
+  config-xmodmap
   link-xmodmap
   echo 'TODO: finish ubuntu keyboard setup'
 }
 
-setup-bindings()
+check-key-remap()
 {
-  
+  [[ ! -d "$MAC_KEY_REMAP_PATH/$MAC_KEY_REMAP_FILE" ]] && { echo '    Both Mac & PC Key Remap Required:'; exit; }
+  [[ ! -d "$MAC_KEY_REMAP_PATH/$PC_KEY_REMAP_FILE" ]] && { echo '    Both Mac & PC Remap Required:'; exit; }
 }
 
 link-xmodmap()
@@ -48,33 +45,15 @@ link-xmodmap()
   make-symlink $INSTALL_PATH/kbd/$XMODMAP.$OS_TYPE $HOME_PATH/$XMODMAP
 }
 
-setup-xmodmap()
+config-xmodmap()
 {
   echo 'TODO: check if config necessary'
 }
 
-link-zsh-bindings()
+link-kbd-bindings()
 {
-  [[ ! -d "$HOME_PATH/.zsh" ]] && mkdir $HOME_PATH/.zsh
-  make-symlink $INSTALL_PATH/kbd/.zsh.bindings.$OS_TYPE $HOME_PATH/.zsh/.bindings
-}
-
-link-bash-bindings()
-{ 
-  [[ ! -d "$HOME_PATH/.bash" ]] && mkdir $HOME_PATH/.bash
-  make-symlink $INSTALL_PATH/kbd/.bash.bindings.$OS_TYPE $HOME_PATH/.bash/.bindings
-}
-
-link-vim-bindings()
-{
-  [[ ! -d "$HOME_PATH/.vim" ]] && mkdir $HOME_PATH/.vim
-  make-symlink $INSTALL_PATH/kbd/.vim.bindings.$OS_TYPE $HOME_PATH/.vim/.bindings
-  echo 'TODO: vim bindings'
-}
-
-link-emacs-bindings()
-{
-  echo 'TODO: emacs bindings'
+  mkdir-if-missing $HOME_PATH/.$1
+  make-symlink $INSTALL_PATH/kbd/.$1.bindings.$OS_TYPE $HOME_PATH/.$1/.bindings
 }
 
 backup-xmodmap()
