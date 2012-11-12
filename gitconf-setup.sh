@@ -5,16 +5,6 @@ export DEFAULT_GIT_CONFIG=.gitconfig
 
 check-dependencies-gitconf()
 {
-  case "$OS_TYPE" in
-    mac)
-      check-if-installed brew
-      ;;
-    ubu)
-      #check sudo?
-      check-if-installed apt-get
-      ;;
-  esac
-
   check-if-installed git
 }
 
