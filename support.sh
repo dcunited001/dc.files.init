@@ -1,7 +1,16 @@
 #!/bin/bash
 
-vars-setinit()
-{
+# move to profile functions
+zsh-default(){ chsh -s /bin/zsh }
+bash-default(){ chsh -s /bin/bash }
+
+# ==============
+# menu helpers
+# ==============
+dcdotfiles-main-menu(){ echo 'TODO: main menu' }
+output-menu(){ echo 'TODO: output menu given arrays with options and descriptions'}
+
+vars-setinit(){
   ask-for-input INSTALL_HOME_PATH 'Home Path'
   ask-for-input INSTALL_FOLDER 'Install Folder', '.files'
   ask-for-input OS_TYPE 'OS Type /(?-i)(mac|vim)/', 'mac'
@@ -12,8 +21,7 @@ vars-setinit()
   export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER
 }
 
-ask-for-input()
-{
+ask-for-input(){
   if [[ -z $3 ]]; then
     echo "  Enter $2: [ $3 ]"
     read $1
@@ -23,11 +31,9 @@ ask-for-input()
     echo "  Enter $2: [ (No Default) ]"
     read $1
   fi
-  echo "TODO: defaults"
 }
 
-make-symlink()
-{
+make-symlink(){
   echo "    Linking $2"
   if [[ -h $2 ]]; then
     echo "      LINK EXISTS: $2 skipping.."
@@ -46,8 +52,7 @@ make-symlink()
   fi
 }
 
-mkdir-if-missing()
-{
+mkdir-if-missing(){
   echo "    Create Dir: $1"
   if [[ -d $1 ]]; then
     echo "      Skip: Create Dir: $1"
@@ -59,30 +64,18 @@ mkdir-if-missing()
   fi
 }
 
-check-for-dir()
-{
+check-for-dir(){
   echo "    Checking Dir: $1."
   [[ ! -d "$1" ]] && { echo "      Directory $1 required"; exit; }
 }
 
-check-if-installed()
-{
+check-if-installed(){
+  #TODO: make this work for arrays
   echo "    Checking: $1"
   command -v $1 >/dev/null 2>&1 || { echo "      $1 is required." >&2; exit 1; }
 }
 
-zsh-default()
-{
-  chsh -s /bin/zsh
-}
-
-bash-default()
-{
-  chsh -s /bin/bash
-}
-
-check-dependencies-init()
-{
+check-dependencies-init(){
   case "$OS_TYPE" in
     mac)
       check-if-installed brew
@@ -98,6 +91,7 @@ check-dependencies-init()
   echo 'TODO: dependencies?'
 }
 
+
 # ==============
 # setup helpers
 # ==============
@@ -108,8 +102,7 @@ check-dependencies-init()
 #   vars-setsecurepath $DEFAULT_SEC_PATH
 # }
 
-setup-gitconf()
-{
+setup-gitconf(){
   # fetch git token
   # export GIT_TOKEN_SECURE=
 
@@ -120,16 +113,13 @@ setup-gitconf()
   echo 'TODO: gitconfig.erb'
 }
 
-setup-iterm()
-{
+setup-iterm(){
   source $INSTALL_PATH/init/iterm-setup.sh
   check-dependencies-iterm
   vars-iterm
-  link-iterm
-}
+  link-iterm}
 
-setup-kbd()
-{
+setup-kbd(){
   source $INSTALL_PATH/init/kbd-setup.sh
   check-dependencies-kbd
   vars-setkbd
@@ -143,16 +133,14 @@ setup-kbd()
   esac
 }
 
-setup-subl()
-{ 
+setup-subl(){ 
   source $INSTALL_PATH/init/subl-setup.sh
   check-dependencies-subl
   vars-subl
   link-subl
 }
 
-setup-tmux()
-{ 
+setup-tmux(){ 
   source $INSTALL_PATH/init/tmux-setup.sh
   check-dependencies-tmux
   vars-tmux
@@ -161,17 +149,14 @@ setup-tmux()
   link-kbd-bindings 'tmux'
 }
 
-setup-ryanb()
-{ 
+setup-ryanb(){ 
   source $INSTALL_PATH/init/ryanb-setup.sh
   check-dependencies-ryanb
   vars-ryanb
   link-gemrc
-  link-irbrc
-}
+  link-irbrc}
 
-setup-janus()
-{
+setup-janus(){
   source $INSTALL_PATH/init/janus-setup.sh
   check-dependencies-janus
   mkdir-if-missing $HOME_PATH/.vim
@@ -181,8 +166,7 @@ setup-janus()
   exec-janus-rake
 }
 
-setup-vim()
-{
+setup-vim(){
   source $INSTALL_PATH/init/vim-setup.sh
   check-dependencies-vim
   mkdir-if-missing $HOME_PATH/.vim
@@ -194,8 +178,7 @@ setup-vim()
   # make-symlink $INSTALL_PATH/janus/janus $HOME_PATH/.vim/janus
 }
 
-setup-emacs()
-{
+setup-emacs(){
   # source $INSTALL_PATH/init/emacs-setup.sh
   # check-dependencies-emacs
   # mkdir-if-missing $HOME_PATH/.emacs
@@ -203,8 +186,7 @@ setup-emacs()
   echo 'TODO: setup emacs'
 }
 
-setup-zsh()
-{
+setup-zsh(){
   source $INSTALL_PATH/init/zsh-setup.sh
   check-dependencies-zsh
   vars-set-zsh
@@ -213,8 +195,7 @@ setup-zsh()
   link-kbd-bindings 'zsh'
 }
 
-setup-bash()
-{
+setup-bash(){
   source $INSTALL_PATH/init/bash-setup.sh
   check-dependencies-bash
   vars-setbash
