@@ -1,8 +1,8 @@
 #!/bin/bash
 
 check-dependencies-vim(){ check-if-installed vim }
-vars-setvim(){ echo 'TODO: set vim vars' }
-setup-vim-plugins(){ echo 'TODO: setup-vim-plugins' }
+vars-setvim(){ output-todo 'set vim vars' }
+setup-vim-plugins(){ output-todo 'setup-vim-plugins' }
 
 link-vimrc-before()   { make-symlink $INSTALL_PATH/vim/.vimrc.before.$OS_TYPE $HOME_PATH/.vimrc.before }
 link-vimrc-after()    { make-symlink $INSTALL_PATH/vim/.vimrc.after.$OS_TYPE $HOME_PATH/.vimrc.after }

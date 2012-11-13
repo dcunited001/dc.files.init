@@ -3,7 +3,7 @@
 # check-if-installed ruby #necessary?
 check-dependencies-zsh(){ check-if-installed zsh }
 
-vars-setzsh(){ echo 'TODO: set zsh vars' }
+vars-setzsh(){ output-todo 'set zsh vars' }
 
 link-omz(){ make-symlink $INSTALL_PATH/omz $HOME_PATH/.oh-my-zsh }
 
@@ -15,4 +15,4 @@ link-zshrc(){
 }
 
 # brew/apt-get?
-install-zsh(){ echo 'TODO: install zsh' }
+install-zsh(){ output-todo 'install zsh' }
