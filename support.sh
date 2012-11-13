@@ -9,19 +9,18 @@ bash-default(){ chsh -s /bin/bash; }
 # ==============
 
 vars-setinit(){
-  output-todo 'fix defaults';
   output-line
-  ask-for-input OS_TYPE 'OS Type /(?-i)(mac|vim)/', 'mac'
+  ask-for-input OS_TYPE 'OS Type /(?-i)(mac|vim)/'
   ask-for-input INSTALL_NAME 'Name'
   ask-for-input INSTALL_EMAIL 'Email'
   ask-for-input INSTALL_USER_NAME 'User Name'
   ask-for-input INSTALL_GIT_USER 'Git User'
-  ask-for-input INSTALL_HOME_PATH 'Home Path', '/Users/'
-  ask-for-input INSTALL_FOLDER 'Install Folder', '.files'
-  ask-for-input INSTALL_PKGMGR 'Package Manager', 'brew'
+  ask-for-input INSTALL_HOME_PATH 'Home Path'
+  ask-for-input INSTALL_FOLDER 'Install Folder'
+  ask-for-input INSTALL_PKGMGR 'Package Manager'
   export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER; }
 
-vars-setinit-default-mac(){
+vars-setinit-dc-mac(){
   output-todo 'replace with config file';
   export OS_TYPE=mac
   export INSTALL_NAME='David Conner'
@@ -29,36 +28,92 @@ vars-setinit-default-mac(){
   export INSTALL_USER_NAME=davidconner
   export INSTALL_GIT_USER=dcunited001
   export INSTALL_HOME_PATH=/Users/davidconner
-  export INSTALL_FOLDER=.files
+  export INSTALL_FOLDER=testdot/.files
   export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER 
   export INSTALL_PKGMGR=brew; }
 
-vars-setinit-default-ubuntu(){
+vars-setinit-defaults-mac(){
+  export DEFAULT_INSTALL_HOME_PATH="$HOME"
+  export DEFAULT_INSTALL_FOLDER=".files"
+  export DEFAULT_INSTALL_PKGMGR="brew"; }
+
+vars-setinit-dc-ubu(){
   output-todo 'replace with config file';
   export OS_TYPE=ubu
   export INSTALL_NAME='David Conner'
   export INSTALL_EMAIL='dconner.pro@gmail.com'
-  export INSTALL_USER_NAME=davidconner
+  export INSTALL_USER_NAME=
   export INSTALL_GIT_USER=dcunited001
   export INSTALL_HOME_PATH=
   export INSTALL_FOLDER=.files
   export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER
   export INSTALL_PKGMGR=apt-get; }
 
+vars-setinit-defaults-ubu(){
+  export DEFAULT_INSTALL_HOME_PATH="$HOME"
+  export DEFAULT_INSTALL_FOLDER=".files"
+  export DEFAULT_INSTALL_PKGMGR="apt-get"; }
+
 # ==============
 # menu helpers
 # ==============
 
-output-menu(){
+menu-main(){
+  opts=( 
+    'check-dependencies-init'
+    'get-user-info'
+    'output-info'
+    'menu-setup'
+    'exit' )
+  menu-for ${opts[@]}
+}
+
+menu-setup(){
+  opts=( 
+    'setup-bash'
+    'setup-gitconf'
+    'setup-iterm'
+    'setup-janus'
+    'setup-kbd'
+    'setup-ryanb'
+    'setup-subl'
+    'setup-tmux'
+    'setup-vim'
+    'setup-zsh'
+    'menu-main'
+    'exit' )
+  menu-for ${opts[@]}
+}
+
+menu-for(){
   output-line
-  local opt-num=1
+  output-menu $@
+  output-line
+  $(menu-selection $@)
+}
+
+#always include menu-exit in options
+menu-selection(){
+  local choice;
+  while [[ -z $choice ]]; do
+    choice=$(menu-choice $@)
+  done;
+  echo $choice;
+}
+
+# menu-choice() { echo 'penis' }
+menu-choice(){ local c; read c; echo ${!c}; } #probably not secure
+menu-exit(){ echo 'exiting'; exit 0; }
+
+output-menu(){
+  echo 'Select # or exit..'
+  local optnum=1
   local arg
   for arg in $@; do
-    echo $opt-num - $arg:
-    optnum++
+    echo "$optnum) $arg"
+    optnum=$[optnum + 1]
   done; }
 
-dcdotfiles-main-menu(){ output-todo 'main menu'; }
 output-line(){ echo "=========================================="; }
 output-info(){
   output-line
@@ -160,7 +215,7 @@ setup-gitconf(){
   # fetch git token? # export GIT_TOKEN_SECURE= 
   source $INSTALL_PATH/init/gitconf-setup.sh
   check-dependencies-gitconf
-  vars-setgitconf $NAME $EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
+  vars-setgitconf $INSTALL_NAME $INSTALL_EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
   link-gitignore
   output-todo 'gitconfig.erb'; }
 
@@ -203,7 +258,7 @@ setup-ryanb(){
 setup-janus(){
   source $INSTALL_PATH/init/janus-setup.sh
   check-dependencies-janus
-  mkdir-if-missing $HOME_PATH/.vim
+  mkdir-if-missing $INSTALL_HOME_PATH/.vim
   make-janus-plugin-folder
   link-janus-folder
   link-janus-rakefile
@@ -212,18 +267,18 @@ setup-janus(){
 setup-vim(){
   source $INSTALL_PATH/init/vim-setup.sh
   check-dependencies-vim
-  mkdir-if-missing $HOME_PATH/.vim
+  mkdir-if-missing $INSTALL_HOME_PATH/.vim
   link-vimrc
   link-gvimrc
   link-kbd-bindings 'vim'
   link-vim-colors
-  # make-symlink $INSTALL_PATH/janus/janus $HOME_PATH/.vim/janus 
+  # make-symlink $INSTALL_PATH/janus/janus $INSTALL_HOME_PATH/.vim/janus 
   setup-vim-plugins; }
 
 setup-emacs(){
   # source $INSTALL_PATH/init/emacs-setup.sh
   # check-dependencies-emacs
-  # mkdir-if-missing $HOME_PATH/.emacs
+  # mkdir-if-missing $INSTALL_HOME_PATH/.emacs
   # link-kbd-bindings 'emacs'
   output-todo 'setup emacs'; }
 
