@@ -1,43 +1,28 @@
 #!/bin/bash
 
 # move to profile functions
-zsh-default(){ chsh -s /bin/zsh }
-bash-default(){ chsh -s /bin/bash }
+zsh-default(){ chsh -s /bin/zsh; }
+bash-default(){ chsh -s /bin/bash; }
 
 # ==============
-# menu helpers
+# init values
 # ==============
-
-output-menu(){
-  output-line
-  for arg in $@; do
-    echo $arg:
-  done }
-
-dcdotfiles-main-menu(){ echo 'TODO: main menu' }
-output-line(){ echo "==========================================" }
-output-info(){
-  output-line
-  echo OS_TYPE:           $OS_TYPE
-  echo INSTALL_NAME:      $INSTALL_NAME
-  echo INSTALL_EMAIL:     $INSTALL_EMAIL
-  echo INSTALL_PATH:      $INSTALL_PATH
-  echo INSTALL_USER_NAME: $INSTALL_USER_NAME
-  echo INSTALL_GIT_USER:  $INSTALL_GIT_USER
-  output-line }
 
 vars-setinit(){
+  output-todo 'fix defaults';
   output-line
-  ask-for-input INSTALL_HOME_PATH 'Home Path'
-  ask-for-input INSTALL_FOLDER 'Install Folder', '.files'
   ask-for-input OS_TYPE 'OS Type /(?-i)(mac|vim)/', 'mac'
   ask-for-input INSTALL_NAME 'Name'
   ask-for-input INSTALL_EMAIL 'Email'
   ask-for-input INSTALL_USER_NAME 'User Name'
   ask-for-input INSTALL_GIT_USER 'Git User'
-  export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER }
+  ask-for-input INSTALL_HOME_PATH 'Home Path', '/Users/'
+  ask-for-input INSTALL_FOLDER 'Install Folder', '.files'
+  ask-for-input INSTALL_PKGMGR 'Package Manager', 'brew'
+  export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER; }
 
 vars-setinit-default-mac(){
+  output-todo 'replace with config file';
   export OS_TYPE=mac
   export INSTALL_NAME='David Conner'
   export INSTALL_EMAIL='dconner.pro@gmail.com'
@@ -45,56 +30,110 @@ vars-setinit-default-mac(){
   export INSTALL_GIT_USER=dcunited001
   export INSTALL_HOME_PATH=/Users/davidconner
   export INSTALL_FOLDER=.files
-  export INSTAPP_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER }
+  export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER 
+  export INSTALL_PKGMGR=brew; }
+
+vars-setinit-default-ubuntu(){
+  output-todo 'replace with config file';
+  export OS_TYPE=ubu
+  export INSTALL_NAME='David Conner'
+  export INSTALL_EMAIL='dconner.pro@gmail.com'
+  export INSTALL_USER_NAME=davidconner
+  export INSTALL_GIT_USER=dcunited001
+  export INSTALL_HOME_PATH=
+  export INSTALL_FOLDER=.files
+  export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER
+  export INSTALL_PKGMGR=apt-get; }
+
+# ==============
+# menu helpers
+# ==============
+
+output-menu(){
+  output-line
+  local opt-num=1
+  local arg
+  for arg in $@; do
+    echo $opt-num - $arg:
+    optnum++
+  done; }
+
+dcdotfiles-main-menu(){ output-todo 'main menu'; }
+output-line(){ echo "=========================================="; }
+output-info(){
+  output-line
+  echo "          OS_TYPE - $OS_TYPE"
+  echo "     INSTALL_NAME - $INSTALL_NAME"
+  echo "    INSTALL_EMAIL - $INSTALL_EMAIL"
+  echo "     INSTALL_PATH - $INSTALL_PATH"
+  echo "INSTALL_USER_NAME - $INSTALL_USER_NAME"
+  echo " INSTALL_GIT_USER - $INSTALL_GIT_USER"
+  output-line; }
 
 ask-for-input(){
-  if [[ -z $3 ]]; then
-    echo "  Enter $2: [ $3 ]"
-    read $1
-    # if empty, set as default
-    [[ -z `echo $1` ]] && { export `echo $1`=$3; }
-  else
-    echo "  Enter $2: [ (No Default) ]"
-    read $1
-  fi }
+  local defval=$(get-default $1);
+  [[ -z $defval ]] && defval='N/A'
+  echo "  Enter $2: [$defval]"; 
+  local rdval; read rdval;
+  resolve-and-set $1 $rdval; }
+  
+ask-when-empty(){ output-todo 'ask-when-empty()'; }
+
+output-todo(){  [[ $TODO_OUT  -eq 'TODO'  ]] && { echo TODO: $1; } }
+output-warn(){  [[ $TODO_OUT  -eq 'TODO'  ]] && { echo TODO: $1; } }
+output-error(){ [[ $ERROR_OUT -eq 'ERROR' ]] && { echo ERROR-$1: $2; return $1; } }
+output-die(){   [[ $FATAL_OUT -eq 'FATAL' ]] && { echo FATAL-$1: $2; exit $1; } }
+
+# ==============
+# misc helpers
+# ==============
+
+get-default-name(){ echo "DEFAULT_${1}"; }
+get-default(){ local defname=$(get-default-name $1); echo ${!defname}; }
+resolve-and-set(){
+  if [[ -z $2 ]]; then { resolve-to-default $1; }
+  else { export ${1}=$2; } 
+  fi; }
+resolve-to-default(){
+  if [[ -z $DEFAULT_${1} ]]; then { output-error 1 "Define: $(get-default-name $1) (No Default)"; }
+  else { export ${1}="$(get-default $1)"; } 
+  fi; }
 
 make-symlink(){
   echo "    Linking $2"
-  if [[ -h $2 ]]; then        { echo "      LINK EXISTS: $2 skipping.." }
-  elif [[ -d "$2" ]]; then    { echo "      DIR EXISTS: $2 aborting.."; exit }
-  elif [[ -e "$2" ]]; then    { echo "      FILE EXISTS: $2 aborting.."; exit }
-  elif [[ ! -e "$1" ]]; then  { echo "      SOURCE DOES NOT EXIST: $1 aborting"; exit }
+  if [[ -h $2 ]]; then { echo "LINK EXISTS: $2 - skipping"; }
+  elif [[ -d "$2" ]]; then { output-error 1 "DIR EXISTS: $2"; }
+  elif [[ -e "$2" ]]; then { output-error 1 "FILE EXISTS: $2"; }
+  elif [[ ! -e "$1" ]]; then { output-die 1 "SOURCE DOES NOT EXIST: $1"; }
   else { echo "      => $1"; ln -s $1 $2; }
-  fi }
+  fi; }
 
 mkdir-if-missing(){
   echo "    Create Dir: $1"
-  if [[ -d $1 ]]; then { echo "      Skip: Create Dir: $1" }
-  elif [[ -e $1 ]]; then { echo "      Error: file is not directory."; exit }
+  if [[ -d $1 ]]; then { echo "      Skip: Create Dir: $1"; }
+  elif [[ -e $1 ]]; then { output-die 1 "Error: file is not directory. $1"; }
   else { mkdir $1; } 
-  fi }
+  fi; }
 
 check-for-dir(){
   echo "    Checking Dir: $1."
-  [[ ! -d "$1" ]] && { echo "      Directory $1 required"; exit; } }
+  [[ ! -d "$1" ]] && { output-die 1 "Directory: required. $1 $2"; } }
 
-check-if-installed(){
-  #TODO: make this work for arrays
-  echo "    Checking: $1"
-  command -v $1 >/dev/null 2>&1 || { echo "      $1 is required." >&2; exit 1; } }
+check-if-installed(){ 
+  for arg in $@; do {
+    echo "    Checking: $arg"
+    command -v $1 >/dev/null 2>&1 || { output-die "$arg is required."; } }; done; }
 
 check-dependencies-init(){
   case "$OS_TYPE" in
-    mac)
-      check-if-installed brew;;
-    ubu)
-      #check sudo?
-      check-if-installed apt-get;;
+    mac) check-if-installed brew;;
+    ubu) check-if-installed apt-get;;
   esac
-  check-if-installed git
-  check-if-installed ruby
-  check-if-installed perl
-  echo 'TODO: dependencies?' }
+  check-if-installed curl git ruby perl
+  check-if-installed $INSTALL_PKG_MANAGER
+  output-todo 'multiple dependencies?'
+  output-todo 'dependencies?'; }
+
 
 # ==============
 # setup helpers
@@ -111,63 +150,55 @@ source-all-scripts(){
   source $INSTALL_PATH/init/subl-setup.sh
   source $INSTALL_PATH/init/tmux-setup.sh
   source $INSTALL_PATH/init/vim-setup.sh
-  source $INSTALL_PATH/init/zsh-setup.sh }
+  source $INSTALL_PATH/init/zsh-setup.sh; }
 
-# setup-secure()
-# {
-#   source $INSTALL_PATH/init/secure-setup.sh
-#   vars-setsecurepath $DEFAULT_SEC_PATH
-# }
+setup-secure(){
+  source $INSTALL_PATH/init/secure-setup.sh
+  vars-setsecurepath $DEFAULT_SEC_PATH; }
 
 setup-gitconf(){
-  # fetch git token
-  # export GIT_TOKEN_SECURE=
-
+  # fetch git token? # export GIT_TOKEN_SECURE= 
   source $INSTALL_PATH/init/gitconf-setup.sh
   check-dependencies-gitconf
   vars-setgitconf $NAME $EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
   link-gitignore
-  echo 'TODO: gitconfig.erb' }
+  output-todo 'gitconfig.erb'; }
 
 setup-iterm(){
   source $INSTALL_PATH/init/iterm-setup.sh
   check-dependencies-iterm
-  vars-iterm
-  link-iterm }
+  vars-setiterm
+  link-iterm; }
 
 setup-kbd(){
   source $INSTALL_PATH/init/kbd-setup.sh
   check-dependencies-kbd
   vars-setkbd
   case "$OS_TYPE" in
-    mac)
-      setup-kbd-mac
-      ;;
-    ubu)
-      setup-kbd-ubu
-      ;;
-  esac }
+    mac) setup-kbd-mac;;
+    ubu) setup-kbd-ubu;;
+  esac; }
 
 setup-subl(){ 
   source $INSTALL_PATH/init/subl-setup.sh
   check-dependencies-subl
-  vars-subl
-  link-subl }
+  vars-setsubl
+  link-subl; }
 
 setup-tmux(){ 
   source $INSTALL_PATH/init/tmux-setup.sh
   check-dependencies-tmux
-  vars-tmux
+  vars-settmux
   link-tmux-conf
-  echo 'TODO: setup tmuxinator'
-  link-kbd-bindings 'tmux' }
+  output-todo 'setup tmuxinator'
+  link-kbd-bindings 'tmux'; }
 
 setup-ryanb(){ 
   source $INSTALL_PATH/init/ryanb-setup.sh
   check-dependencies-ryanb
-  vars-ryanb
+  vars-setryanb
   link-gemrc
-  link-irbrc }
+  link-irbrc; }
 
 setup-janus(){
   source $INSTALL_PATH/init/janus-setup.sh
@@ -176,7 +207,7 @@ setup-janus(){
   make-janus-plugin-folder
   link-janus-folder
   link-janus-rakefile
-  exec-janus-rake }
+  exec-janus-rake; }
 
 setup-vim(){
   source $INSTALL_PATH/init/vim-setup.sh
@@ -187,25 +218,25 @@ setup-vim(){
   link-kbd-bindings 'vim'
   link-vim-colors
   # make-symlink $INSTALL_PATH/janus/janus $HOME_PATH/.vim/janus 
-  setup-vim-plugins }
+  setup-vim-plugins; }
 
 setup-emacs(){
   # source $INSTALL_PATH/init/emacs-setup.sh
   # check-dependencies-emacs
   # mkdir-if-missing $HOME_PATH/.emacs
   # link-kbd-bindings 'emacs'
-  echo 'TODO: setup emacs' }
+  output-todo 'setup emacs'; }
 
 setup-zsh(){
   source $INSTALL_PATH/init/zsh-setup.sh
   check-dependencies-zsh
-  vars-set-zsh
+  vars-setzsh
   link-omz
   link-zshrc
-  link-kbd-bindings 'zsh' }
+  link-kbd-bindings 'zsh'; }
 
 setup-bash(){
   source $INSTALL_PATH/init/bash-setup.sh
   check-dependencies-bash
   vars-setbash
-  link-kbd-bindings 'bash' }
+  link-kbd-bindings 'bash'; }
