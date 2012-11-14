@@ -8,6 +8,4 @@ source-all-scripts
 output-info
 check-dependencies-init
 
-while [[ 'true' -eq 'true' ]]; do 
-  menu-main;
-done
+menu-main
