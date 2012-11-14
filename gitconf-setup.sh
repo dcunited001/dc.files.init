@@ -4,10 +4,15 @@ export DEFAULT_GIT_IGNORE=.gitignore_global
 export DEFAULT_GIT_CONFIG=.gitconfig
 
 setup-gitconf() {
+  DEFAULT_GIT_NAME=$INSTALL_NAME
+  DEFAULT_GIT_EMAIL=$INSTALL_EMAIL
   check-dependencies-gitignore
-  vars-setgitconf $INSTALL_NAME $INSTALL_EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
+  # output-gitinfo
   opts=(
     'check-dependencies-gitignore'
+    'vars-setgitinfo'
+    'vars-setgittoken'
+    'output-gitinfo'
     'link-gitignore'
     # 'unlink-gitignore'
     'check-dependencies-gitconfig-erb'
@@ -21,12 +26,14 @@ setup-gitconf() {
 check-dependencies-gitignore(){ check-if-installed git; }
 check-dependencies-gitconf-erb(){ check-if-installed ruby rake; }
 
-vars-setgitconf(){
-  export GIT_NAME=$1
-  export GIT_EMAIL=$2
-  export GIT_IGNORE=$3
-  export GIT_CONFIG=$4
-  export GIT_TOKEN=$5; }
+vars-setgitinfo(){
+  ask-for-input GIT_NAME
+  ask-for-input GIT_EMAIL; }
+output-gitinfo(){
+  echo "      Name: $GIT_NAME"
+  echo "     Email: $GIT_EMAIL"
+  echo " Git Token: $GIT_TOKEN"; }
 
-link-gitignore(){ make-symlink $INSTALL_PATH/gitconf/$GIT_IGNORE.$OS_TYPE $HOME_PATH/$GIT_IGNORE; }
+vars-setgittoken(){ ask-for-input GIT_TOKEN; }
+link-gitignore(){ make-symlink $INSTALL_PATH/gitconf/$DEFAULT_GIT_IGNORE.$OS_TYPE $INSTALL_HOME_PATH/$DEFAULT_GIT_IGNORE; }
 create-gitconfig-from-erb(){ check-dependencies-gitconfig-erb; output-todo 'create gitconfig template from ERB'; }

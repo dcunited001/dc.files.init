@@ -64,7 +64,8 @@ menu-main(){
     'output-info'
     'menu-setup'
     'exit' )
-  menu-for ${opts[@]}; }
+  menu-for ${opts[@]};
+  menu-main; }
 
 menu-setup(){
   opts=( 
@@ -82,7 +83,8 @@ menu-setup(){
     'setup-zsh'
     'menu-main'
     'menu-exit' )
-  menu-for ${opts[@]}l; }
+  menu-for ${opts[@]};
+  menu-setup; }
 
 menu-for(){
   output-line
