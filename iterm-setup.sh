@@ -1,10 +1,23 @@
 #!/bin/bash
 
-check-dependencies-iterm(){ output-todo 'check for iterm'; }
+export DEFAULT_ITERM_SETTINGS_PATH=$INSTALL_HOME_PATH/Library/Preferences
+export DEFAULT_ITERM_SETTINGS_FILE=com.googlecode.iterm2.plist
+
+check-dependencies-iterm(){ check-for-dir $ITERM_SETTINGS_PATH 'iTerm'; }
+setup-iterm(){
+  opts=(
+    'vars-setiterm'
+    'check-dependencies-iterm'
+    'link-iterm'
+    # 'backup-iterm'
+    'menu-setup'
+    'menu-exit' );
+  menu-for ${opts[@]};
+  setup-iterm; }  
 
 vars-setiterm(){
-  export $ITERM_SETTINGS_PATH=$INSTALL_HOME_PATH/Library/Preferences
-  export $ITERM_SETTINGS_FILE=com.googlecode.iterm2.plist; }
-
+  ask-for-input 'ITERM_SETTINGS_PATH'; 
+  ask-for-input 'ITERM_SETTINGS_FILE'; }
 link-iterm(){ make-symlink $INSTALL_PATH/iterm/$ITERM_SETTINGS_FILE $ITERM_SETTINGS_PATH/$ITERM_SETTINGS_FILE; }
 backup-iterm(){ output-todo 'backup iterm settings'; }
+setup-iterm-fonts(){ output-todo 'setup iterm fonts' }

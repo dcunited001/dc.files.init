@@ -60,17 +60,17 @@ vars-setinit-defaults-ubu(){
 
 menu-main(){
   opts=( 
-    'check-dependencies-init'
     'get-user-info'
     'output-info'
     'menu-setup'
     'exit' )
-  menu-for ${opts[@]}
-}
+  menu-for ${opts[@]}; }
 
 menu-setup(){
   opts=( 
+    'check-dependencies-init'
     'setup-bash'
+    'setup-emacs'
     'setup-gitconf'
     'setup-iterm'
     'setup-janus'
@@ -81,16 +81,14 @@ menu-setup(){
     'setup-vim'
     'setup-zsh'
     'menu-main'
-    'exit' )
-  menu-for ${opts[@]}
-}
+    'menu-exit' )
+  menu-for ${opts[@]}l; }
 
 menu-for(){
   output-line
   output-menu $@
   output-line
-  $(menu-selection $@)
-}
+  $(menu-selection $@); }
 
 #always include menu-exit in options
 menu-selection(){
@@ -98,10 +96,8 @@ menu-selection(){
   while [[ -z $choice ]]; do
     choice=$(menu-choice $@)
   done;
-  echo $choice;
-}
+  echo $choice; }
 
-# menu-choice() { echo 'penis' }
 menu-choice(){ local c; read c; echo ${!c}; } #probably not secure
 menu-exit(){ echo 'exiting'; exit 0; }
 
@@ -114,7 +110,7 @@ output-menu(){
     optnum=$[optnum + 1]
   done; }
 
-output-line(){ echo "=========================================="; }
+output-line(){ echo "==========================="; }
 output-info(){
   output-line
   echo "          OS_TYPE - $OS_TYPE"
@@ -172,7 +168,7 @@ mkdir-if-missing(){
 
 check-for-dir(){
   echo "    Checking Dir: $1."
-  [[ ! -d "$1" ]] && { output-die 1 "Directory: required. $1 $2"; } }
+  [[ ! -d "$1" ]] && { output-die 1 "Directory required: $1 $2"; } }
 
 check-if-installed(){ 
   for arg in $@; do {
@@ -185,8 +181,6 @@ check-dependencies-init(){
     ubu) check-if-installed apt-get;;
   esac
   check-if-installed curl git ruby perl
-  check-if-installed $INSTALL_PKG_MANAGER
-  output-todo 'multiple dependencies?'
   output-todo 'dependencies?'; }
 
 
@@ -197,6 +191,7 @@ check-dependencies-init(){
 source-all-scripts(){
   source $INSTALL_PATH/init/support.sh
   source $INSTALL_PATH/init/bash-setup.sh
+  source $INSTALL_PATH/init/emacs-setup.sh
   source $INSTALL_PATH/init/gitconf-setup.sh
   source $INSTALL_PATH/init/iterm-setup.sh
   source $INSTALL_PATH/init/janus-setup.sh
@@ -207,91 +202,6 @@ source-all-scripts(){
   source $INSTALL_PATH/init/vim-setup.sh
   source $INSTALL_PATH/init/zsh-setup.sh; }
 
-setup-secure(){
-  source $INSTALL_PATH/init/secure-setup.sh
-  vars-setsecurepath $DEFAULT_SEC_PATH; }
-
-setup-gitconf(){
-  # fetch git token? # export GIT_TOKEN_SECURE= 
-  source $INSTALL_PATH/init/gitconf-setup.sh
-  check-dependencies-gitconf
-  vars-setgitconf $INSTALL_NAME $INSTALL_EMAIL $DEFAULT_GIT_IGNORE $DEFAULT_GIT_CONFIG $GIT_TOKEN_SECURE
-  link-gitignore
-  output-todo 'gitconfig.erb'; }
-
-setup-iterm(){
-  source $INSTALL_PATH/init/iterm-setup.sh
-  check-dependencies-iterm
-  vars-setiterm
-  link-iterm; }
-
-setup-kbd(){
-  source $INSTALL_PATH/init/kbd-setup.sh
-  check-dependencies-kbd
-  vars-setkbd
-  case "$OS_TYPE" in
-    mac) setup-kbd-mac;;
-    ubu) setup-kbd-ubu;;
-  esac; }
-
-setup-subl(){ 
-  source $INSTALL_PATH/init/subl-setup.sh
-  check-dependencies-subl
-  vars-setsubl
-  link-subl; }
-
-setup-tmux(){ 
-  source $INSTALL_PATH/init/tmux-setup.sh
-  check-dependencies-tmux
-  vars-settmux
-  link-tmux-conf
-  output-todo 'setup tmuxinator'
-  link-kbd-bindings 'tmux'; }
-
-setup-ryanb(){ 
-  source $INSTALL_PATH/init/ryanb-setup.sh
-  check-dependencies-ryanb
-  vars-setryanb
-  link-gemrc
-  link-irbrc; }
-
-setup-janus(){
-  source $INSTALL_PATH/init/janus-setup.sh
-  check-dependencies-janus
-  mkdir-if-missing $INSTALL_HOME_PATH/.vim
-  make-janus-plugin-folder
-  link-janus-folder
-  link-janus-rakefile
-  exec-janus-rake; }
-
-setup-vim(){
-  source $INSTALL_PATH/init/vim-setup.sh
-  check-dependencies-vim
-  mkdir-if-missing $INSTALL_HOME_PATH/.vim
-  link-vimrc
-  link-gvimrc
-  link-kbd-bindings 'vim'
-  link-vim-colors
-  # make-symlink $INSTALL_PATH/janus/janus $INSTALL_HOME_PATH/.vim/janus 
-  setup-vim-plugins; }
-
-setup-emacs(){
-  # source $INSTALL_PATH/init/emacs-setup.sh
-  # check-dependencies-emacs
-  # mkdir-if-missing $INSTALL_HOME_PATH/.emacs
-  # link-kbd-bindings 'emacs'
-  output-todo 'setup emacs'; }
-
-setup-zsh(){
-  source $INSTALL_PATH/init/zsh-setup.sh
-  check-dependencies-zsh
-  vars-setzsh
-  link-omz
-  link-zshrc
-  link-kbd-bindings 'zsh'; }
-
-setup-bash(){
-  source $INSTALL_PATH/init/bash-setup.sh
-  check-dependencies-bash
-  vars-setbash
-  link-kbd-bindings 'bash'; }
+# setup-secure(){
+#   source $INSTALL_PATH/init/secure-setup.sh
+#   vars-setsecurepath $DEFAULT_SEC_PATH; }
