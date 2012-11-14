@@ -25,8 +25,8 @@ setup-subl(){
 check-dependencies-subl(){ output-todo 'check-dependencies-subl'; }
 vars-setsubl(){
   output-todo 'sublime plugins/settings' # export SUBL_PLUGINS_PATH=$2
-  ask-for-info 'SUBL_SETTINGS_PATH'
-  ask-for-info 'SUBL_SETTINGS_USERFILE'; }
+  ask-for-input 'SUBL_SETTINGS_PATH'
+  ask-for-input 'SUBL_SETTINGS_USERFILE'; }
 
 vars-setsubl-path(){ make-symlink }
 link-subl-settings(){ make-symlink $INSTALL_PATH/subl/$SUBL_SETTINGS_FILE $SUBL_SETTINGS_PATH/$SUBL_SETTINGS_FILE; }
