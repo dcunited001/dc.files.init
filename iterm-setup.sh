@@ -6,8 +6,8 @@ export DEFAULT_ITERM_SETTINGS_FILE=com.googlecode.iterm2.plist
 check-dependencies-iterm(){ check-for-dir $ITERM_SETTINGS_PATH 'iTerm'; }
 setup-iterm(){
   opts=(
-    'vars-setiterm'
     'check-dependencies-iterm'
+    'vars-setiterm'
     'link-iterm'
     # 'backup-iterm'
     'menu-setup'

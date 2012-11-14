@@ -15,7 +15,7 @@ setup-vim(){
     'link-gvimrc-all'
     'link-vim-colors'
     'link-vim-syntax'
-    'link-kbd-bindings vim'
+    'link-kbd-bindings-vim'
     'setup-vim-plugins'
     'menu-setup'
     'menu-exit' );
@@ -32,8 +32,8 @@ setup-vim-plugins(){ output-todo 'decide on using vim or janus plugin folder'; o
 
 link-vimrc-before()   { make-symlink $INSTALL_PATH/vim/.vimrc.before.$OS_TYPE $INSTALL_HOME_PATH/.vimrc.before; }
 link-vimrc-after()    { make-symlink $INSTALL_PATH/vim/.vimrc.after.$OS_TYPE $INSTALL_HOME_PATH/.vimrc.after; }
-link-gvimrc-before()  { make-symlink $INSTALL_PATH/vim/.gvim.before.$OS_TYPE $INSTALL_HOME_PATH/.gvim.before; } 
-link-gvimrc-after()   { make-symlink $INSTALL_PATH/vim/.gvim.after.$OS_TYPE $INSTALL_HOME_PATH/.gvim.after; }
+link-gvimrc-before()  { make-symlink $INSTALL_PATH/vim/.gvimrc.before.$OS_TYPE $INSTALL_HOME_PATH/.gvimrc.before; } 
+link-gvimrc-after()   { make-symlink $INSTALL_PATH/vim/.gvimrc.after.$OS_TYPE $INSTALL_HOME_PATH/.gvimrc.after; }
 
 link-vim-colors()     { make-symlink $INSTALL_PATH/vim/colors/ $INSTALL_HOME_PATH/.vim/colors; }
 link-vim-syntax()     { make-symlink $INSTALL_PATH/vim/syntax/ $INSTALL_HOME_PATH/.vim/syntax; }

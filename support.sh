@@ -28,7 +28,7 @@ vars-setinit-dc-mac(){
   export INSTALL_USER_NAME=davidconner
   export INSTALL_GIT_USER=dcunited001
   export INSTALL_HOME_PATH=/Users/davidconner
-  export INSTALL_FOLDER=testdot/.files
+  export INSTALL_FOLDER=.files
   export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER 
   export INSTALL_PKGMGR=brew; }
 
@@ -74,7 +74,6 @@ menu-setup(){
     'setup-emacs'
     'setup-gitconf'
     'setup-iterm'
-    'setup-janus'
     'setup-kbd'
     'setup-ryanb'
     'setup-subl'
@@ -126,7 +125,7 @@ output-info(){
 ask-for-input(){
   local defval=$(get-default $1);
   [[ -z $defval ]] && defval='N/A'
-  echo "  Enter $2: [$defval]"; 
+  echo "  Enter $1: [$defval]"; 
   local rdval; read rdval;
   resolve-and-set $1 $rdval; }
   

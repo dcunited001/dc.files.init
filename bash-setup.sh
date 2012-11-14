@@ -2,7 +2,7 @@
 
 setup-bash(){ 
   opts=(
-    'link-kbd-bindings bash'
+    'link-kbd-bindings-bash'
     'menu-setup' )
   menu-for ${opts[@]}; 
   setup-bash; }

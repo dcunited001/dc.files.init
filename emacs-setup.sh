@@ -6,6 +6,7 @@ setup-emacs(){
     # 'check-dependencies-iterm'
     # 'link-iterm'
     # 'backup-iterm'
+    'link-kbd-bindings-emacs'
     'menu-setup'
     'menu-exit' );
   menu-for ${opts[@]};
