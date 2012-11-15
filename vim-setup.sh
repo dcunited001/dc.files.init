@@ -1,23 +1,22 @@
 #!/bin/bash
 
 #path to janus from ~/.files
-DEFAULT_JANUS_PATH=janus/janus
+# DEFAULT_JANUS_PATH=janus/janus
 
 setup-vim(){
   check-dependencies-vim
   opts=(
-    'check-dependencies-janus'
-    'vars-setjanus'
-    'link-janus-all'
-    'make-janus-plugin-folder'
-    'exec-janus-rake'
     'link-vimrc-all'
-    'link-janus-vimrc'
-    'link-janus-gvimrc'
     'link-gvimrc-all'
     'link-vim-colors'
     'link-vim-syntax'
     'link-kbd-bindings-vim'
+    'check-dependencies-janus'
+    'vars-setjanus'
+    'link-janus-all'
+    'load-janus-git-modules'
+    'make-janus-plugin-folder'
+    'exec-janus-rake'
     'setup-vim-plugins'
     'menu-setup'
     'menu-exit' );
@@ -28,7 +27,6 @@ check-dependencies-vim(){ check-if-installed vim; }
 check-dependencies-janus(){ check-if-installed vim ruby rake; }
 
 vars-setvim(){ output-todo 'set vim vars'; }
-vars-setjanus(){ ask-for-input 'JANUS_PATH'; }
 
 setup-vim-plugins(){ output-todo 'decide on using vim or janus plugin folder'; output-todo 'setup-vim-plugins'; }
 
@@ -44,7 +42,7 @@ link-vimrc-all()      { link-vimrc-before; link-vimrc-after; }
 link-gvimrc-all()     { link-gvimrc-before; link-gvimrc-after; }
 link-janus-all() { 
   link-janus-folder; 
-  # janus rake task care of vimrc & gvimrc
+  # janus rake tasks care of vimrc & gvimrc
   link-janus-rakefile;
   remind-janus-rake; }
 
@@ -54,11 +52,16 @@ link-janus-folder()         { make-symlink $INSTALL_PATH/janus/janus $INSTALL_HO
 link-janus-rakefile()       { make-symlink $INSTALL_PATH/janus/Rakefile $INSTALL_HOME_PATH/.vim/Rakefile; }
 make-janus-plugin-folder()  { mkdir-if-missing $INSTALL_HOME_PATH/.janus; output-todo 'decide on using vim or janus plugin folder'; }
 
+load-janus-git-modules(){
+  cd $INSTALL_PATH/janus
+  git submodule init
+  git submodule update
+  cd $INSTALL_PATH; }
 exec-janus-rake(){ 
-  cd $INSTALL_HOME_PATH/.vim; output-line; 
-  echo 'Running Janus Raketask:'; 
+  cd $INSTALL_HOME_PATH/.vim && output-line; 
+  echo 'Running Janus Raketask:' 
   rake; 
-  cd $INSTALL_PATH; output-line; }
+  cd $INSTALL_PATH && output-line; }
 remind-janus-rake(){
   output-line
   echo 'Run janus rake task!'
