@@ -153,10 +153,10 @@ resolve-to-default(){
 
 make-symlink(){
   echo "    Linking $2"
-  if [[ -h $2 ]]; then { echo "LINK EXISTS: $2 - skipping"; }
-  elif [[ -d "$2" ]]; then { output-error 1 "DIR EXISTS: $2"; }
-  elif [[ -e "$2" ]]; then { output-error 1 "FILE EXISTS: $2"; }
-  elif [[ ! -e "$1" ]]; then { output-die 1 "SOURCE DOES NOT EXIST: $1"; }
+  if [[ -h $2 ]]; then { echo "      Skip: $2 - skipping"; }
+  elif [[ -d "$2" ]]; then { output-error 1 "      Dir Exists: $2"; }
+  elif [[ -e "$2" ]]; then { output-error 1 "      File Exists: $2"; }
+  elif [[ ! -e "$1" ]]; then { output-die 1 "      Source Not Found: $1"; }
   else { echo "      => $1"; ln -s $1 $2; }
   fi; }
 
@@ -195,7 +195,6 @@ source-all-scripts(){
   source $INSTALL_PATH/init/emacs-setup.sh
   source $INSTALL_PATH/init/gitconf-setup.sh
   source $INSTALL_PATH/init/iterm-setup.sh
-  source $INSTALL_PATH/init/janus-setup.sh
   source $INSTALL_PATH/init/kbd-setup.sh
   source $INSTALL_PATH/init/ryanb-setup.sh
   source $INSTALL_PATH/init/subl-setup.sh
