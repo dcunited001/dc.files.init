@@ -54,7 +54,11 @@ link-janus-folder()         { make-symlink $INSTALL_PATH/janus/janus $INSTALL_HO
 link-janus-rakefile()       { make-symlink $INSTALL_PATH/janus/Rakefile $INSTALL_HOME_PATH/.vim/Rakefile; }
 make-janus-plugin-folder()  { mkdir-if-missing $INSTALL_HOME_PATH/.janus; output-todo 'decide on using vim or janus plugin folder'; }
 
-exec-janus-rake(){ output-todo 'exec janus rake'; }
+exec-janus-rake(){ 
+  cd $INSTALL_HOME_PATH/.vim; output-line; 
+  echo 'Running Janus Raketask:'; 
+  rake; 
+  cd $INSTALL_PATH; output-line; }
 remind-janus-rake(){
   output-line
   echo 'Run janus rake task!'
