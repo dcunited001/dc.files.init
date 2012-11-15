@@ -20,4 +20,4 @@ vars-setiterm(){
   ask-for-input 'ITERM_SETTINGS_FILE'; }
 link-iterm(){ make-symlink $INSTALL_PATH/iterm/$ITERM_SETTINGS_FILE $ITERM_SETTINGS_PATH/$ITERM_SETTINGS_FILE; }
 backup-iterm(){ output-todo 'backup iterm settings'; }
-setup-iterm-fonts(){ output-todo 'setup iterm fonts' }
+setup-iterm-fonts(){ output-todo 'setup iterm fonts'; }

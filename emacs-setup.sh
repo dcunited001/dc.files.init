@@ -10,4 +10,4 @@ setup-emacs(){
     'menu-setup'
     'menu-exit' );
   menu-for ${opts[@]};
-  setup-emacs }
+  setup-emacs; }

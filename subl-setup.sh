@@ -28,7 +28,7 @@ vars-setsubl(){
   ask-for-input 'SUBL_SETTINGS_PATH'
   ask-for-input 'SUBL_SETTINGS_USERFILE'; }
 
-vars-setsubl-path(){ make-symlink }
+vars-setsubl-path(){ make-symlink; }
 link-subl-settings(){ make-symlink $INSTALL_PATH/subl/$SUBL_SETTINGS_FILE $SUBL_SETTINGS_PATH/$SUBL_SETTINGS_FILE; }
 backup-subl-settings(){ output-todo 'backup subl settings'; }
 
