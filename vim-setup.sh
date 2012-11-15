@@ -12,6 +12,8 @@ setup-vim(){
     'make-janus-plugin-folder'
     'exec-janus-rake'
     'link-vimrc-all'
+    'link-janus-vimrc'
+    'link-janus-gvimrc'
     'link-gvimrc-all'
     'link-vim-colors'
     'link-vim-syntax'
@@ -40,10 +42,22 @@ link-vim-syntax()     { make-symlink $INSTALL_PATH/vim/syntax/ $INSTALL_HOME_PAT
 
 link-vimrc-all()      { link-vimrc-before; link-vimrc-after; }
 link-gvimrc-all()     { link-gvimrc-before; link-gvimrc-after; }
-link-janus-all()      { link-janus-folder; link-janus-rakefile; }
+link-janus-all() { 
+  link-janus-folder; 
+  # janus rake task care of vimrc & gvimrc
+  link-janus-rakefile;
+  remind-janus-rake; }
 
+link-janus-vimrc()          { make-symlink $INSTALL_PATH/janus/janus/vim/vimrc $INSTALL_HOME_PATH/.vimrc; }
+link-janus-gvimrc()         { make-symlink $INSTALL_PATH/janus/janus/vim/gvimrc $INSTALL_HOME_PATH/.gvimrc; }
 link-janus-folder()         { make-symlink $INSTALL_PATH/janus/janus $INSTALL_HOME_PATH/.vim/janus; }
 link-janus-rakefile()       { make-symlink $INSTALL_PATH/janus/Rakefile $INSTALL_HOME_PATH/.vim/Rakefile; }
 make-janus-plugin-folder()  { mkdir-if-missing $INSTALL_HOME_PATH/.janus; output-todo 'decide on using vim or janus plugin folder'; }
 
 exec-janus-rake(){ output-todo 'exec janus rake'; }
+remind-janus-rake(){
+  output-line
+  echo 'Run janus rake task!'
+  echo '  cd ~/.vim'
+  echo '  rake'
+  output-line; }
