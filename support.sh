@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# move to profile functions
-zsh-default(){ chsh -s /bin/zsh; }
-bash-default(){ chsh -s /bin/bash; }
-
 # ==============
 # init values
 # ==============
@@ -136,6 +132,24 @@ output-warn(){  [[ $TODO_OUT  -eq 'TODO'  ]] && { echo TODO: $1; } }
 output-error(){ [[ $ERROR_OUT -eq 'ERROR' ]] && { echo ERROR-$1: $2; return $1; } }
 output-die(){   [[ $FATAL_OUT -eq 'FATAL' ]] && { echo FATAL-$1: $2; exit $1; } }
 
+output-error-or-die(){ msg=$1; lvl=1
+  while getopts ":d:l" opt; do
+    case $opt in
+      d) die='-d';;
+      l) echo $OPTARG; echo $OPTIND; lvl=$OPTARG;;
+    esac
+  done
+
+  #TO FIX: DOWNLOAD GNU-GETOPT
+
+  #echo $die; 
+  #[[ -z $die ]] && echo 'fdsa'
+ # [[ -z $fdsdie ]] && echo 'fdsafdafdfdsa'; }
+
+  #[[ -z $die ]] && output-error $lvl $msg || output-die $lvl $msg; }
+  #[[ -z $die ]] && output-die $lvl $msg || output-error $lvl $msg; }
+  [[ ! -z $die ]] && output-die $lvl $msg || output-error $lvl $msg; }
+
 # ==============
 # misc helpers
 # ==============
@@ -167,6 +181,20 @@ mkdir-if-missing(){
   else { mkdir $1; } 
   fi; }
 
+check-for-file(){
+  msg="File Required"
+  lvl=1
+  while getopts ":d:ml" opt; do
+    case $opt in
+      d) die='-d';;
+      m) msg=$OPTARG;;
+      l) lvl="-l $OPTARG";;
+    esac
+  done
+
+  echo "    Checking File: $1"
+  [[ ! -e $1 ]] && output-error-or-die $lvl $die $msg || echo Found; }
+
 check-for-dir(){
   echo "    Checking Dir: $1."
   [[ ! -d "$1" ]] && { output-die 1 "Directory required: $1 $2"; } }
@@ -183,7 +211,6 @@ check-dependencies-init(){
   esac
   check-if-installed curl git ruby perl
   output-todo 'dependencies?'; }
-
 
 # ==============
 # setup helpers
@@ -205,3 +232,11 @@ source-all-scripts(){
 # setup-secure(){
 #   source $INSTALL_PATH/init/secure-setup.sh
 #   vars-setsecurepath $DEFAULT_SEC_PATH; }
+
+# converts a mac osx prefpane *.plist file to xml from binary
+convert-plist(){
+  [[ ! -z $2 ]] && convformat=$2 || convformat=xml1
+  [[ ! -e $1 ]] && output-die "File "
+  echo "Converting Pref Pane to .$convformat: $1"
+  plutil -convert $convformat -o ~/.files/$1 $1
+}
