@@ -6,7 +6,6 @@ export DEFAULT_MAC_KEY_REMAP_FILE=org.pqrs.KeyRemap4MacBook.plist
 export DEFAULT_PC_KEY_REMAP_FILE=org.pqrs.PCKeyboardHack.plist
 
 setup-kbd(){
-  vars-setkbd
   opts=(
     'vars-setkbd'
     'check-dependencies-kbd'
@@ -33,14 +32,12 @@ check-dependencies-kbd(){
   esac; }
 check-dependencies-kbd-mac(){ check-key-remap; }
 check-dependencies-kbd-ubu(){ output-todo 'check-dependencies-kbd-ubu (none?)'; }
-check-key-remap(){
-  check-for-dir "$MAC_KEY_REMAP_PATH/$MAC_KEY_REMAP_FILE" 'Both Mac & PC Key Remap Required:'
-  check-for-dir "$MAC_KEY_REMAP_PATH/$PC_KEY_REMAP_FILE" 'Both Mac & PC Key Remap Required:'; }
+check-for-key-remap(){ vars-setkbd; check-for-dir "$MAC_KEY_REMAP_PATH" 'Both Mac & PC Key Remap Required:'; }
 
 vars-setkbd(){
   case "$OS_TYPE" in
-    mac) vars-setkbd-ubu;;
-    ubu) vars-setkbd-mac;;
+    mac) vars-setkbd-mac;;
+    ubu) vars-setkbd-ubu;;
   esac; }
 vars-setkbd-ubu(){ ask-for-input 'XMODMAP'; }
 vars-setkbd-mac(){
