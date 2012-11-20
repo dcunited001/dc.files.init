@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export DEFAULT_GIT_IGNORE=.gitignore_global
-export DEFAULT_GIT_CONFIG=.gitconfig
+export DEFAULT_GIT_IGNORE=gitignore_global
+export DEFAULT_GIT_CONFIG=gitconfig
 
 setup-gitconf() {
   DEFAULT_GIT_NAME=$INSTALL_NAME
@@ -35,5 +35,5 @@ output-gitinfo(){
   echo " Git Token: $GIT_TOKEN"; }
 
 vars-setgittoken(){ ask-for-input GIT_TOKEN; }
-link-gitignore(){ make-symlink $INSTALL_PATH/gitconf/$DEFAULT_GIT_IGNORE.$OS_TYPE $INSTALL_HOME_PATH/$DEFAULT_GIT_IGNORE; }
+link-gitignore(){ make-symlink $INSTALL_PATH/gitconf/$DEFAULT_GIT_IGNORE.$OS_TYPE $INSTALL_HOME_PATH/.$DEFAULT_GIT_IGNORE; }
 create-gitconfig-from-erb(){ check-dependencies-gitconfig-erb; output-todo 'create gitconfig template from ERB'; }
