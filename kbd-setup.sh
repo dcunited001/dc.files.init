@@ -60,7 +60,7 @@ link-kbd-bindings-emacs(){ link-kbd-bindings 'emacs'; }
 link-kbd-bindings-tmux(){ link-kbd-bindings 'tmux'; }
 link-kbd-bindings(){
   mkdir-if-missing $INSTALL_HOME_PATH/.$1
-  make-symlink $INSTALL_PATH/kbd/bindkeys.$1.$OS_TYPE $INSTALL_HOME_PATH/.$1/.bindkeys; }
+  make-symlink $INSTALL_PATH/kbd/bindkeys.$1.$OS_TYPE $INSTALL_HOME_PATH/.$1/bindkeys; }
 
 backup-xmodmap(){ output-todo 'backup xmodmap'; }
 backup-key-remap(){ output-todo 'backup key remap'; }
