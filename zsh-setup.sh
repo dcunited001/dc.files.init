@@ -23,8 +23,8 @@ link-zshrc(){
   make-symlink $INSTALL_PATH/zsh/zshrc.$OS_TYPE $INSTALL_HOME_PATH/.zsh/.zshrc
   make-symlink $INSTALL_PATH/zsh/zlogin.$OS_TYPE $INSTALL_HOME_PATH/.zsh/.zlogin
   make-symlink $INSTALL_PATH/zsh/zlogout.$OS_TYPE $INSTALL_HOME_PATH/.zsh/.zlogout
-  make-symlink $INSTALL_PATH/alias/alias.$OS_TYPE $INSTALL_HOME_PATH/.zsh/.alias
-  make-symlink $INSTALL_PATH/zsh/omz $INSTALL_HOME_PATH/.zsh/.omz; }
+  make-symlink $INSTALL_PATH/alias/alias.$OS_TYPE $INSTALL_HOME_PATH/.zsh/alias
+  make-symlink $INSTALL_PATH/zsh/omz $INSTALL_HOME_PATH/.zsh/omz; }
 
 link-zsh-profile-etc(){ output todo 'create /etc/zsh* links (or copy the files?)'; }
 backup-zsh-profile-etc() { output todo 'cp /etc/zsh* files'; }
