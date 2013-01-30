@@ -25,7 +25,7 @@ vars-setinit-dc-mac(){
   export INSTALL_GIT_USER=dcunited001
   export INSTALL_HOME_PATH=/Users/dc
   export INSTALL_FOLDER=.files
-  export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER 
+  export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER
   export INSTALL_PKGMGR=brew; }
 
 vars-setinit-defaults-mac(){
@@ -55,7 +55,7 @@ vars-setinit-defaults-ubu(){
 # ==============
 
 menu-main(){
-  opts=( 
+  opts=(
     'get-user-info'
     'output-info'
     'menu-setup'
@@ -64,7 +64,7 @@ menu-main(){
   menu-main; }
 
 menu-setup(){
-  opts=( 
+  opts=(
     'check-dependencies-init'
     'setup-bash'
     'setup-emacs'
@@ -121,10 +121,10 @@ output-info(){
 ask-for-input(){
   local defval=$(get-default $1);
   [[ -z $defval ]] && defval='N/A'
-  echo "  Enter $1: [$defval]"; 
+  echo "  Enter $1: [$defval]";
   local rdval; read rdval;
   resolve-and-set $1 $rdval; }
-  
+
 ask-when-empty(){ output-todo 'ask-when-empty()'; }
 
 output-todo(){  [[ $TODO_OUT  -eq 'TODO'  ]] && { echo TODO: $1; } }
@@ -142,7 +142,7 @@ output-error-or-die(){ msg=$1; lvl=1
 
   #TO FIX: DOWNLOAD GNU-GETOPT
 
-  #echo $die; 
+  #echo $die;
   #[[ -z $die ]] && echo 'fdsa'
  # [[ -z $fdsdie ]] && echo 'fdsafdafdfdsa'; }
 
@@ -158,11 +158,11 @@ get-default-name(){ echo "DEFAULT_${1}"; }
 get-default(){ local defname=$(get-default-name $1); echo ${!defname}; }
 resolve-and-set(){
   if [[ -z $2 ]]; then { resolve-to-default $1; }
-  else { export ${1}=$2; } 
+  else { export ${1}=$2; }
   fi; }
 resolve-to-default(){
   if [[ -z $DEFAULT_${1} ]]; then { output-error 1 "Define: $(get-default-name $1) (No Default)"; }
-  else { export ${1}="$(get-default $1)"; } 
+  else { export ${1}="$(get-default $1)"; }
   fi; }
 
 make-symlink(){
@@ -178,7 +178,7 @@ mkdir-if-missing(){
   echo "    Create Dir: $1"
   if [[ -d $1 ]]; then { echo "      Skip: Create Dir: $1"; }
   elif [[ -e $1 ]]; then { output-die 1 "Error: file is not directory. $1"; }
-  else { mkdir $1; } 
+  else { mkdir $1; }
   fi; }
 
 check-for-file(){
@@ -199,7 +199,7 @@ check-for-dir(){
   echo "    Checking Dir: $1."
   [[ ! -d "$1" ]] && { output-die 1 "Directory required: $1 $2"; } }
 
-check-if-installed(){ 
+check-if-installed(){
   for arg in $@; do {
     echo "    Checking: $arg"
     command -v $1 >/dev/null 2>&1 || { output-die "$arg is required."; } }; done; }

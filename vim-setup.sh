@@ -32,7 +32,7 @@ setup-vim-plugins(){ output-todo 'decide on using vim or janus plugin folder'; o
 
 link-vimrc-before()   { make-symlink $INSTALL_PATH/vim/vimrc.before.$OS_TYPE $INSTALL_HOME_PATH/.vimrc.before; }
 link-vimrc-after()    { make-symlink $INSTALL_PATH/vim/vimrc.after.$OS_TYPE $INSTALL_HOME_PATH/.vimrc.after; }
-link-gvimrc-before()  { make-symlink $INSTALL_PATH/vim/gvimrc.before.$OS_TYPE $INSTALL_HOME_PATH/.gvimrc.before; } 
+link-gvimrc-before()  { make-symlink $INSTALL_PATH/vim/gvimrc.before.$OS_TYPE $INSTALL_HOME_PATH/.gvimrc.before; }
 link-gvimrc-after()   { make-symlink $INSTALL_PATH/vim/gvimrc.after.$OS_TYPE $INSTALL_HOME_PATH/.gvimrc.after; }
 
 link-vim-colors()     { make-symlink $INSTALL_PATH/vim/colors/ $INSTALL_HOME_PATH/.vim/colors; }
@@ -40,8 +40,8 @@ link-vim-syntax()     { make-symlink $INSTALL_PATH/vim/syntax/ $INSTALL_HOME_PAT
 
 link-vimrc-all()      { link-vimrc-before; link-vimrc-after; }
 link-gvimrc-all()     { link-gvimrc-before; link-gvimrc-after; }
-link-janus-all() { 
-  link-janus-folder; 
+link-janus-all() {
+  link-janus-folder;
   # janus rake tasks care of vimrc & gvimrc
   link-janus-rakefile;
   remind-janus-rake; }
@@ -58,10 +58,10 @@ load-janus-git-modules(){
   git submodule update
   cd $INSTALL_PATH; }
 
-exec-janus-rake(){ 
-  cd $INSTALL_HOME_PATH/.vim && output-line; 
-  echo 'Running Janus Raketask:' 
-  rake; 
+exec-janus-rake(){
+  cd $INSTALL_HOME_PATH/.vim && output-line;
+  echo 'Running Janus Raketask:'
+  rake;
   cd $INSTALL_PATH && output-line; }
 remind-janus-rake(){
   output-line
