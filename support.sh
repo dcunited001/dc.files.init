@@ -114,6 +114,7 @@ output-info(){
   echo "     INSTALL_NAME - $INSTALL_NAME"
   echo "    INSTALL_EMAIL - $INSTALL_EMAIL"
   echo "     INSTALL_PATH - $INSTALL_PATH"
+  echo "INSTALL_HOME_PATH - $INSTALL_HOME_PATH"
   echo "INSTALL_USER_NAME - $INSTALL_USER_NAME"
   echo " INSTALL_GIT_USER - $INSTALL_GIT_USER"
   output-line; }
