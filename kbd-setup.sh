@@ -56,7 +56,7 @@ link-key-remap(){
 link-kbd-bindings-bash(){ link-kbd-bindings 'bash'; }
 link-kbd-bindings-zsh(){ link-kbd-bindings 'zsh'; }
 link-kbd-bindings-vim(){ link-kbd-bindings 'vim'; }
-link-kbd-bindings-emacs(){ make-symlink $INSTALL_PATH/kbd/bindkeys.emacs.$OS_TYPE $INSTALL_HOME_PATH/.emacs.d/personal/bindkeys.el; }
+link-kbd-bindings-emacs(){ make-symlink $INSTALL_PATH/kbd/bindkeys.emacs.$OS_TYPE $INSTALL_HOME_PATH/.emacs.d/personal/support/bindkeys.el; }
 
 link-kbd-bindings-tmux(){ link-kbd-bindings 'tmux'; }
 
