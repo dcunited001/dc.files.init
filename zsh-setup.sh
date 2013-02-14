@@ -18,6 +18,7 @@ vars-setzsh(){ output-todo 'set zsh vars'; }
 link-omz(){ make-symlink $INSTALL_PATH/omz $INSTALL_HOME_PATH/.oh-my-zsh; }
 link-zshrc(){
   mkdir-if-missing $INSTALL_HOME_PATH/.zsh
+  mkdir-if-missing $INSTALL_HOME_PATH/.zsh/.etc
   make-symlink $INSTALL_PATH/zsh/zshenv.$OS_TYPE $INSTALL_HOME_PATH/.zsh/.zshenv
   make-symlink $INSTALL_PATH/zsh/zprofile.$OS_TYPE $INSTALL_HOME_PATH/.zsh/.zprofile
   make-symlink $INSTALL_PATH/zsh/zshrc.$OS_TYPE $INSTALL_HOME_PATH/.zsh/.zshrc
