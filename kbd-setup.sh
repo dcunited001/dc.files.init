@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DEFAULT_XMODMAP=Xmodmap
+export DEFAULT_XMODMAP=.Xmodmap
 export DEFAULT_MAC_KEY_REMAP_PATH=$INSTALL_HOME_PATH/Library/Preferences
 export DEFAULT_MAC_KEY_REMAP_FILE=org.pqrs.KeyRemap4MacBook.plist
 export DEFAULT_PC_KEY_REMAP_FILE=org.pqrs.PCKeyboardHack.plist
