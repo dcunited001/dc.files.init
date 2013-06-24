@@ -26,6 +26,7 @@ link-zshrc(){
   make-symlink $INSTALL_PATH/zsh/zlogout.$OS_TYPE $INSTALL_HOME_PATH/.zsh/.zlogout
   make-symlink $INSTALL_PATH/alias/alias.$OS_TYPE.sh $INSTALL_HOME_PATH/.zsh/alias
   make-symlink $INSTALL_PATH/alias/func.$OS_TYPE.sh $INSTALL_HOME_PATH/.zsh/func
+  make-symlink $INSTALL_PATH/zsh/prompt $INSTALL_HOME_PATH/.zsh/prompt
   make-symlink $INSTALL_PATH/zsh/omz $INSTALL_HOME_PATH/.zsh/omz; }
 
 link-zsh-profile-etc(){ output todo 'create /etc/zsh* links (or copy the files?)'; }
