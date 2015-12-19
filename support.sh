@@ -21,9 +21,9 @@ vars-setinit-dc-mac(){
   export OS_TYPE=mac
   export INSTALL_NAME='David Conner'
   export INSTALL_EMAIL='dconner.pro@gmail.com'
-  export INSTALL_USER_NAME=dc
+  export INSTALL_USER_NAME=`whoami`
   export INSTALL_GIT_USER=dcunited001
-  export INSTALL_HOME_PATH=/Users/dc
+  export INSTALL_HOME_PATH=$HOME
   export INSTALL_FOLDER=.files
   export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER
   export INSTALL_PKGMGR=brew; }
@@ -38,9 +38,9 @@ vars-setinit-dc-ubu(){
   export OS_TYPE=ubu
   export INSTALL_NAME='David Conner'
   export INSTALL_EMAIL='dconner.pro@gmail.com'
-  export INSTALL_USER_NAME=
+  export INSTALL_USER_NAME=`whoami`
   export INSTALL_GIT_USER=dcunited001
-  export INSTALL_HOME_PATH=
+  export INSTALL_HOME_PATH=$HOME
   export INSTALL_FOLDER=.files
   export INSTALL_PATH=$INSTALL_HOME_PATH/$INSTALL_FOLDER
   export INSTALL_PKGMGR=apt-get; }
